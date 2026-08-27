@@ -20,6 +20,12 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: resolve(__dirname, 'src/preload/index.ts'),
+        // 샌드박스 preload 로더는 CJS만 지원합니다. 루트 package.json이
+        // "type": "module"이라도 preload만은 강제로 CJS(.js)로 내보냅니다.
+        output: {
+          format: 'cjs',
+          entryFileNames: '[name].js',
+        },
       },
     },
   },

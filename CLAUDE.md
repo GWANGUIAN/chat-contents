@@ -39,6 +39,13 @@ There are no tests in this repo yet (`vitest` is pinned in the catalog but not w
 
 To smoke-test the embedded chat-proxy in isolation without Electron: import `startChatProxyServer` from `@chat-contents/chat-proxy` in a throwaway script and `curl -N http://127.0.0.1:<port>/api/chat/soop/stream?channelId=<id>` — this isolates chat-proxy/SOOP-protocol bugs from Electron/IPC bugs.
 
+**Debugging a blank/white renderer in a packaged build**: `electron-vite dev` and `pnpm build` (unpacked `out/`) can both work fine while the actual asar-packaged app still breaks — packaging (bundling scope, asar path resolution) is where preload/renderer wiring bugs actually surface. Don't trust a dev-mode "it works" for this class of bug. To debug: run the packaged exe directly from a terminal so its `console.log` reaches you — `release/win-unpacked/<ProductName>.exe` (not the portable `.exe`, which detaches) — and temporarily add in `src/main/index.ts` after window creation:
+```ts
+win.webContents.on('console-message', (_e, _level, message) => console.log('[renderer]', message))
+win.webContents.on('preload-error', (_e, path, error) => console.log('[preload-error]', path, error))
+```
+Remove these before committing; they're a debugging aid, not permanent logging (see "Deliberately out of scope" below for the real logging story).
+
 ## Architecture
 
 ### Package layout
@@ -112,12 +119,15 @@ window.api.window.{setFullscreen,setResolution,getState}
 
 `window-manager.ts` is the only place that's allowed to call `BrowserWindow` resize/fullscreen APIs — window mode and resolution changes always go: renderer → IPC → here, never directly.
 
+**`src/preload/index.ts` must import `buildPreloadApi` from the `@chat-contents/electron-shared/preload-api` subpath, never from the package root (`@chat-contents/electron-shared`).** The root barrel (`index.ts`) also re-exports `bootstrapChatProxy` (`chat-proxy-bootstrap.ts`), which pulls in `@chat-contents/chat-proxy` and Electron's `app` module — both main-process-only. If preload imports the barrel, its bundle drags that code in too; `@chat-contents/chat-proxy` (correctly, since preload has no reason to need it) isn't in preload's `externalizeDepsPlugin` exclude list, so it gets emitted as a bare `require('@chat-contents/chat-proxy')` — which has no compiled JS to resolve, and **fails silently at runtime only in the packaged asar build** (`electron-vite dev`/unpacked runs can mask this). Symptom: blank white renderer, `window.api` undefined, no error unless you're watching `webContents.on('preload-error')`. If `preload-api.ts` ever needs a new dependency, keep it dependency-light (currently only `ipc-contract.ts`, which has none) — anything heavier belongs behind the main-only barrel, not here.
+
 ### Scaffolding a new content app
 
 Copy `apps/example`'s structure. The parts that must not change:
 - `electron.vite.config.ts`'s `externalizeDepsPlugin({ exclude: [...] })` on the `main` and `preload` configs — workspace packages (`@chat-contents/chat-proxy`, `@chat-contents/electron-shared`) are TS source with no build step, so they must be **excluded from externalization** (bundled by Vite/Rollup) or Electron will try to `require()` a `.ts` file at runtime and crash. Real npm deps (`ws`, `electron-store`, `zod`) stay externalized as normal.
-- The preload build output is `index.mjs` (not `.js`) because these packages are `"type": "module"` — `src/main/index.ts` must reference `../preload/index.mjs` exactly. This bit people; electron-vite's default preload output extension depends on the package's module type.
+- The preload build is **forced to CJS** (`electron.vite.config.ts`'s `preload.build.rollupOptions.output: { format: 'cjs', entryFileNames: '[name].js' }`) even though the rest of the repo is `"type": "module"`. Without this override, electron-vite emits an ESM `index.mjs` preload, which **silently fails to load** under `sandbox: true` (`SyntaxError: Cannot use import statement outside a module` from Electron's sandboxed preload loader — it only supports CJS). The symptom is a blank white renderer with no visible error, because `window.api` never gets exposed and the renderer crashes on first `window.api.*` access. `src/main/index.ts` references `../preload/index.js` to match. Keep this override if you scaffold a new app.
 - `electron-builder.yml`'s `win.target: portable` — the whole distribution model is "one `.exe`, no installer, no auto-update." Don't add a `publish` block or switch targets without discussing it; it's a deliberate v1 constraint, not an oversight.
+- `src/main/index.ts`'s `Menu.setApplicationMenu(null)` call — these are custom-UI streamer apps, not traditional desktop software, so Electron's default File/Edit/View/Window/Help menu bar is always removed.
 
 What *should* change per app: the `accent` color passed to `ThemeProvider`, `productName`/`appId` in `electron-builder.yml`, the window title, and obviously the renderer UI itself.
 
