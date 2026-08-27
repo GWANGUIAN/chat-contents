@@ -1,0 +1,15 @@
+appId: com.chatcontents.example
+productName: ExampleStreamApp
+directories:
+  output: release
+files:
+  - out/**/*
+  - package.json
+win:
+  target:
+    - target: portable
+      arch:
+        - x64
+portable:
+  artifactName: ${productName}-${version}-portable.exe
+asar: true

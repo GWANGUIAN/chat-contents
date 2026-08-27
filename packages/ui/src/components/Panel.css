@@ -1,0 +1,12 @@
+.cc-panel {
+  border-radius: var(--radius-lg);
+  background: var(--surface-panel);
+  border: 1px solid var(--border-faint);
+  box-shadow: var(--shadow-panel);
+  padding: var(--space-5);
+}
+
+.cc-panel--subtle {
+  background: var(--surface-panel-alt);
+  box-shadow: none;
+}

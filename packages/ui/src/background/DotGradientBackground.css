@@ -1,0 +1,32 @@
+.cc-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cc-bg__gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 85% 15%, var(--accent-soft), transparent 42%),
+    radial-gradient(circle at 10% 85%, var(--accent-softer), transparent 46%),
+    linear-gradient(
+      135deg,
+      var(--bg-gradient-1) 0%,
+      var(--bg-gradient-2) 55%,
+      var(--bg-gradient-3) 100%
+    );
+}
+
+.cc-bg__dots {
+  position: absolute;
+  inset: 0;
+  opacity: var(--dot-opacity);
+  background-image: radial-gradient(circle, var(--dot-color) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  background-position: 0 0;
+  mask-image: radial-gradient(ellipse 80% 65% at 50% 42%, #000 55%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 42%, #000 55%, transparent 100%);
+}

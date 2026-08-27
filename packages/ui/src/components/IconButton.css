@@ -1,0 +1,25 @@
+.cc-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-faint);
+  background: var(--surface-panel);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-panel);
+  transition:
+    transform 0.15s ease,
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.cc-icon-button:hover {
+  color: var(--accent-text);
+  background: var(--accent-softer);
+}
+
+.cc-icon-button:active {
+  transform: scale(0.94);
+}

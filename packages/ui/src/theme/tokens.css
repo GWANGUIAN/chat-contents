@@ -1,0 +1,75 @@
+:root {
+  /* 간격 스케일 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* 라운드 스케일 — 둥글고 귀여운 톤 */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* 그림자 — R,G,B 트리플렛으로 두면 라이트/다크 전환 시 알파만 바꿔도 됩니다 */
+  --shadow-color: 255, 140, 190;
+  --shadow-panel:
+    0 12px 32px -8px rgba(var(--shadow-color), 0.28), 0 2px 8px rgba(var(--shadow-color), 0.14);
+  --shadow-float: 0 6px 18px -4px rgba(var(--shadow-color), 0.22);
+
+  /* 서피스 / 텍스트 — 구조는 고정, accent 계열만 앱별로 오버라이드됩니다 */
+  --bg-base: #fff6fb;
+  --bg-gradient-1: #fff9fc;
+  --bg-gradient-2: #ffeef7;
+  --bg-gradient-3: #f6f1ff;
+  --dot-color: #ffffff;
+  --dot-opacity: 0.55;
+
+  --surface-panel: #ffffffee;
+  --surface-panel-alt: #fff5fa;
+  --surface-input: #fff0f7;
+  --surface-hover: #fff3f9;
+
+  --border-faint: #3d0f2c0f;
+  --border-default: #3d0f2c1c;
+  --border-strong: #3d0f2c30;
+
+  --text-primary: #2c1424;
+  --text-secondary: #7a5468;
+  --text-muted: #a181a6;
+
+  --backdrop: #2c142499;
+
+  /* accent — ThemeProvider가 앱/스트리머별로 오버라이드하는 유일한 축 */
+  --accent: #ff6fae;
+  --accent-hover: #f2569c;
+  --accent-soft: #ff6fae29;
+  --accent-softer: #ff6fae12;
+  --accent-text: #c23e79;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text-primary);
+  background: var(--bg-base);
+  font-family:
+    "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}

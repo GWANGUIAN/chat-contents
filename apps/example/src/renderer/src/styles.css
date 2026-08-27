@@ -1,0 +1,120 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.app-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-6);
+}
+
+.app-shell__settings-trigger {
+  position: fixed;
+  left: var(--space-6);
+  bottom: var(--space-6);
+  z-index: 50;
+}
+
+.chat-test-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(480px, 100%);
+}
+
+.chat-test-panel__form {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.chat-test-panel__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.chat-test-panel__status--connected {
+  color: var(--accent-text);
+}
+
+.chat-test-panel__status--error {
+  color: #d1435f;
+}
+
+.chat-test-panel__messages {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 360px;
+  min-height: 120px;
+  overflow-y: auto;
+  border-radius: var(--radius-md);
+  background: var(--surface-panel-alt);
+}
+
+.chat-test-panel__message {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: 13px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-panel);
+}
+
+.chat-test-panel__message strong {
+  color: var(--accent-text);
+}
+
+.chat-test-panel__message--donation,
+.chat-test-panel__message--subscription,
+.chat-test-panel__message--system {
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.settings-panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.settings-panel__section-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.settings-panel__row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.settings-panel__select {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--surface-input);
+  color: var(--text-primary);
+  padding: var(--space-2) var(--space-3);
+  font-size: 14px;
+}
+
+.settings-panel__select:disabled {
+  opacity: 0.5;
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@chat-contents/electron-shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@chat-contents/chat-proxy": "workspace:*",
+    "electron-store": "catalog:"
+  },
+  "devDependencies": {
+    "@chat-contents/config": "workspace:*",
+    "@types/node": "catalog:",
+    "electron": "catalog:",
+    "typescript": "catalog:"
+  }
+}

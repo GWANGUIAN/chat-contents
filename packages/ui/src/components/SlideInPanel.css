@@ -1,0 +1,40 @@
+.cc-slide-in {
+  position: fixed;
+  bottom: var(--space-6);
+  z-index: 40;
+  width: min(340px, calc(100vw - var(--space-6) * 2));
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.cc-slide-in--bottom-left {
+  left: var(--space-6);
+  transform: translate(-8px, 12px);
+}
+
+.cc-slide-in--bottom-right {
+  right: var(--space-6);
+  transform: translate(8px, 12px);
+}
+
+.cc-slide-in--open {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.cc-slide-in__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.cc-slide-in__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
