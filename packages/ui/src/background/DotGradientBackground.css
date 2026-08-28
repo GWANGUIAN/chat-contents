@@ -30,3 +30,8 @@
   mask-image: radial-gradient(ellipse 80% 65% at 50% 42%, #000 55%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 42%, #000 55%, transparent 100%);
 }
+
+.cc-bg__decorations {
+  position: absolute;
+  inset: 0;
+}

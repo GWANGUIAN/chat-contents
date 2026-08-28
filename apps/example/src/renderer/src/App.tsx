@@ -9,6 +9,7 @@ import {
   ToastProvider,
 } from '@chat-contents/ui'
 import { useEffect, useRef, useState } from 'react'
+import { BackgroundDecorations } from './BackgroundDecorations'
 import { ChatTestPanel } from './ChatTestPanel'
 import { OnboardingFlow } from './OnboardingFlow'
 import { SettingsPanel } from './SettingsPanel'
@@ -78,7 +79,7 @@ export function App() {
   return (
     <ThemeProvider accent={ACCENT_COLOR} fontFamily={FONT_FAMILY} tokens={THEME_TOKENS}>
       <ToastProvider>
-        <DotGradientBackground />
+        <DotGradientBackground decorations={<BackgroundDecorations />} />
         <div className="app-shell">
           {onboardingComplete ? (
             <>
