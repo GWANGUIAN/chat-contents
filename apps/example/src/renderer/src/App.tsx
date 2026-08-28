@@ -6,6 +6,7 @@ import {
   SlideInPanel,
   ThemeProvider,
   ToastProvider,
+  type ThemeTokenOverrides,
 } from '@chat-contents/ui'
 import { useEffect, useRef, useState } from 'react'
 import { ChatTestPanel } from './ChatTestPanel'
@@ -29,7 +30,7 @@ const ACCENT_SOFTER = '#F0FDF4'
  * 구조를 유지하되 emerald-900(#064E3B)을 잉크로, emerald-400(#34D399)을 그림자 톤으로 써서
  * 그린 계열로 맞췄습니다.
  */
-const THEME_TOKENS = {
+const THEME_TOKENS: ThemeTokenOverrides = {
   accentHover: '#059669',
   accentSoft: ACCENT_SOFT,
   accentSofter: ACCENT_SOFTER,
