@@ -1,5 +1,6 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import type { ReactElement, ReactNode } from 'react'
+import { usePortalContainer } from '../theme/ThemeProvider'
 import './Tooltip.css'
 
 export interface TooltipProps {
@@ -18,11 +19,13 @@ export interface TooltipProps {
  * 효율적이지만, 이 앱들의 규모에서는 차이가 미미합니다).
  */
 export function Tooltip({ content, children, side = 'top', className }: TooltipProps) {
+  const container = usePortalContainer()
+
   return (
     <TooltipPrimitive.Provider delayDuration={200}>
       <TooltipPrimitive.Root>
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
-        <TooltipPrimitive.Portal>
+        <TooltipPrimitive.Portal container={container}>
           <TooltipPrimitive.Content
             className={['cc-tooltip__content', className].filter(Boolean).join(' ')}
             side={side}

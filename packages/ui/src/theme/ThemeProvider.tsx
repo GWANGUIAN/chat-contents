@@ -1,6 +1,23 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { useMemo } from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { deriveAccentShades } from './theme'
+
+const PortalContainerContext = createContext<HTMLElement | null>(null)
+
+/**
+ * Radix Portal 기반 컴포넌트(Dropdown, Modal, Tooltip 등)는 이 값을 자신의
+ * Portal `container` prop으로 넘겨야 ThemeProvider가 주입한 CSS 커스텀 프로퍼티를
+ * 상속받습니다. Portal의 기본 컨테이너는 document.body인데, ThemeProvider는
+ * `--accent-*`/`--text-*`/`--shadow-*` 같은 값들을 :root가 아니라 자신의 래퍼
+ * div에 인라인 스타일로 주입합니다. document.body에 그대로 portal되면 그
+ * 래퍼 div의 DOM 서브트리 밖(형제 노드)에 렌더링되어 CSS 변수 상속이 끊기고,
+ * tokens.css의 :root 기본값(핑크 팔레트)으로 조용히 되돌아갑니다 — 이게 바로
+ * 예제 앱에서 열린 Modal의 배경/보더/그림자 색이 그린 테마 대신 기본 핑크로
+ * 보였던 원인입니다.
+ */
+export function usePortalContainer(): HTMLElement | undefined {
+  return useContext(PortalContainerContext) ?? undefined
+}
 
 export interface ThemeTokenOverrides {
   /** accent에서 자동 파생되는 값 대신 정확한 브랜드 컬러를 쓰고 싶을 때 오버라이드합니다. */
@@ -78,6 +95,16 @@ export function ThemeProvider({
   children,
   className,
 }: ThemeProviderProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  // Portal container는 마운트된 뒤에야 실제 DOM 노드를 알 수 있으므로, ref 자체가
+  // 아니라 state로 들고 있다가 첫 렌더 이후 채워 넣습니다(그래야 값이 바뀔 때
+  // Context를 구독하는 Portal 쪽이 다시 렌더링됩니다).
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null)
+
+  useEffect(() => {
+    setPortalContainer(containerRef.current)
+  }, [])
+
   const style = useMemo<CSSProperties>(() => {
     const shades = deriveAccentShades(accent)
     const result: Record<string, string> = {
@@ -116,8 +143,10 @@ export function ThemeProvider({
   }, [accent, fontFamily, tokens])
 
   return (
-    <div className={className} style={style}>
-      {children}
-    </div>
+    <PortalContainerContext.Provider value={portalContainer}>
+      <div ref={containerRef} className={className} style={style}>
+        {children}
+      </div>
+    </PortalContainerContext.Provider>
   )
 }

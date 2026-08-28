@@ -1,6 +1,7 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import type { ReactNode } from 'react'
 import { X } from '../icons'
+import { usePortalContainer } from '../theme/ThemeProvider'
 import { IconButton } from './IconButton'
 import { Title } from './Title'
 import './Modal.css'
@@ -19,9 +20,11 @@ export interface ModalProps {
  * Dialog 위에 Panel과 같은 글래스모피즘 톤을 입혔습니다.
  */
 export function Modal({ open, onClose, title, children, className }: ModalProps) {
+  const container = usePortalContainer()
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={(next) => !next && onClose()}>
-      <DialogPrimitive.Portal>
+      <DialogPrimitive.Portal container={container}>
         <DialogPrimitive.Overlay className="cc-modal__overlay" />
         <DialogPrimitive.Content
           className={['cc-modal__content', className].filter(Boolean).join(' ')}

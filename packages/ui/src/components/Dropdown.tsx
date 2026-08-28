@@ -1,5 +1,6 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown, ChevronUp } from '../icons'
+import { usePortalContainer } from '../theme/ThemeProvider'
 import './Dropdown.css'
 
 export interface DropdownOption {
@@ -36,6 +37,8 @@ export function Dropdown({
   className,
   ...rest
 }: DropdownProps) {
+  const container = usePortalContainer()
+
   return (
     <SelectPrimitive.Root
       value={value}
@@ -52,7 +55,7 @@ export function Dropdown({
           <ChevronDown size={26} />
         </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
-      <SelectPrimitive.Portal>
+      <SelectPrimitive.Portal container={container}>
         <SelectPrimitive.Content className="cc-dropdown__content" position="popper" sideOffset={8}>
           <SelectPrimitive.ScrollUpButton className="cc-dropdown__scroll-button">
             <ChevronUp size={20} />

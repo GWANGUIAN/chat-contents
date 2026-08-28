@@ -51,6 +51,6 @@ export type { StepDefinition, UseStepperOptions, UseStepperResult } from './comp
 export { useStepper } from './components/useStepper'
 export * from './icons'
 export type { ThemeProviderProps, ThemeTokenOverrides } from './theme/ThemeProvider'
-export { ThemeProvider } from './theme/ThemeProvider'
+export { ThemeProvider, usePortalContainer } from './theme/ThemeProvider'
 export type { AccentShades } from './theme/theme'
 export { deriveAccentShades } from './theme/theme'

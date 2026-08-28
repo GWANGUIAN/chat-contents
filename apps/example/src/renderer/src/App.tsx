@@ -5,8 +5,8 @@ import {
   Settings,
   SlideInPanel,
   ThemeProvider,
-  ToastProvider,
   type ThemeTokenOverrides,
+  ToastProvider,
 } from '@chat-contents/ui'
 import { useEffect, useRef, useState } from 'react'
 import { ChatTestPanel } from './ChatTestPanel'
