@@ -8,19 +8,31 @@ export default meta
 
 type Story = StoryObj
 
-const colors = [
-  '--accent',
-  '--accent-hover',
-  '--accent-soft',
-  '--accent-softer',
-  '--accent-text',
-  '--accent-border',
-  '--text-primary',
-  '--text-secondary',
-  '--text-muted',
-  '--surface-panel',
-  '--surface-panel-alt',
-  '--surface-input',
+const colors: { token: string; background?: string }[] = [
+  { token: '--accent' },
+  { token: '--accent-hover' },
+  { token: '--accent-soft' },
+  { token: '--accent-softer' },
+  { token: '--accent-text' },
+  { token: '--accent-border' },
+  { token: '--text-primary' },
+  { token: '--text-secondary' },
+  { token: '--text-muted' },
+  { token: '--surface-panel' },
+  { token: '--surface-panel-alt' },
+  { token: '--surface-input' },
+  { token: '--bg-base' },
+  { token: '--bg-gradient-1' },
+  { token: '--bg-gradient-2' },
+  { token: '--bg-gradient-3' },
+  { token: '--dot-color' },
+  { token: '--border-faint' },
+  { token: '--border-default' },
+  { token: '--border-strong' },
+  { token: '--backdrop' },
+  // --shadow-color is a bare "R, G, B" triplet (consumed as rgba(var(--shadow-color), alpha)),
+  // not a paintable color on its own — wrap it in rgb() to render a swatch.
+  { token: '--shadow-color', background: 'rgb(var(--shadow-color))' },
 ]
 const spaces = [
   '--space-1',
@@ -47,14 +59,14 @@ export const Overview: Story = {
       <section>
         <h3>Colors</h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-          {colors.map((token) => (
+          {colors.map(({ token, background }) => (
             <div key={token} style={{ textAlign: 'center' }}>
               <div
                 style={{
                   width: 72,
                   height: 72,
                   borderRadius: 12,
-                  background: `var(${token})`,
+                  background: background ?? `var(${token})`,
                   border: '1px solid rgba(0,0,0,0.15)',
                 }}
               />

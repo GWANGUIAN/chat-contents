@@ -33,6 +33,10 @@ async function bootstrap(): Promise<void> {
   })
 
   registerIpcHandlers({ settingsStore, chatProxyHandle, win })
+
+  if (process.env.OPEN_DEVTOOLS === 'true') {
+    win.webContents.openDevTools()
+  }
 }
 
 app.on('window-all-closed', () => {

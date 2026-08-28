@@ -10,7 +10,43 @@ import { ChatTestPanel } from './ChatTestPanel'
 import { SettingsPanel } from './SettingsPanel'
 
 /** 스트리머별로 이 값만 바꾸면 전체 UI 색상이 따라옵니다. */
-const ACCENT_COLOR = '#ff6fae'
+const ACCENT_COLOR = '#10B981'
+
+const ACCENT_SOFT = '#E6F7ED'
+const ACCENT_SOFTER = '#F0FDF4'
+
+/**
+ * accent에서 자동 파생되는 대신 정확히 맞춰야 하는 브랜드 그린 팔레트(Tailwind emerald
+ * 스케일 기준: accent=emerald-500, accentHover=600, accentText=700, accentBorder=800).
+ * 원래 tokens.css의 배경/그림자/보더는 핑크 잉크(#3d0f2c 계열)에서 파생돼 있어, 같은
+ * 구조를 유지하되 emerald-900(#064E3B)을 잉크로, emerald-400(#34D399)을 그림자 톤으로 써서
+ * 그린 계열로 맞췄습니다.
+ */
+const THEME_TOKENS = {
+  accentHover: '#059669',
+  accentSoft: ACCENT_SOFT,
+  accentSofter: ACCENT_SOFTER,
+  accentText: '#047857',
+  accentBorder: '#065F46',
+  textPrimary: '#191C1A',
+  textSecondary: '#4A5D53',
+  textMuted: '#82978A',
+  surfacePanel: '#FFFFFF',
+  surfacePanelAlt: '#F6F9F7',
+  surfaceInput: '#FFFFFF',
+  bgBase: '#FAFFFC',
+  bgGradient1: '#F7FEFB',
+  bgGradient2: ACCENT_SOFT,
+  bgGradient3: ACCENT_SOFTER,
+  shadowColor: '52, 211, 153',
+  borderFaint: '#064E3B0f',
+  borderDefault: '#064E3B1c',
+  borderStrong: '#064E3B30',
+  backdrop: '#064E3B99',
+}
+
+const FONT_FAMILY =
+  "'Paperozi', 'Pretendard Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif"
 
 export function App() {
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -22,7 +58,7 @@ export function App() {
   }, [])
 
   return (
-    <ThemeProvider accent={ACCENT_COLOR}>
+    <ThemeProvider accent={ACCENT_COLOR} fontFamily={FONT_FAMILY} tokens={THEME_TOKENS}>
       <DotGradientBackground />
       <div className="app-shell">
         <ChatTestPanel baseUrl={chatProxyPort ? `http://127.0.0.1:${chatProxyPort}` : null} />
