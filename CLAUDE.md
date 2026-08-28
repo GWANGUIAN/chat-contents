@@ -56,6 +56,7 @@ packages/
   chat-proxy       Node-only SOOP chat client + local HTTP+SSE server (no React/DOM deps)
   chat-client      React-only: useChatStream() hook, EventSource wrapper (no Node deps)
   app-settings     React-only: useAppSettings()/useWindowMode() hooks over window.api (no Node deps, no UI)
+  tts              React-only: useChatTts() speaks chat events via Web Speech API (no Node deps, no IPC)
   ui               design system: theming, dot-grid/gradient background, Panel/Button/Slider/etc.
   electron-shared  main+preload-only glue: settings store, IPC contract, window manager, preload API factory
 apps/
@@ -152,6 +153,17 @@ Every app is expected to ship the same "settings gear" pattern (BGM/SFX volume, 
 
 See `apps/example/src/renderer/src/SettingsPanel.tsx` for the reference usage — it's now just `Slider`/`Dropdown`/`Button` JSX driven by these two hooks, with no local `useState`/`useEffect` or hardcoded resolution list.
 
+### Chat TTS (packages/tts)
+
+Reads viewer chat aloud using the browser's built-in `window.speechSynthesis`/`SpeechSynthesisUtterance` Web Speech API — since Electron's renderer is Chromium, this needs **zero IPC and zero main-process code**, the same reasoning as `chat-client`'s `EventSource` being a browser API. `packages/ui` has no audio-playback precedent (the pre-existing `bgmVolume`/`sfxVolume` `AppSettings` fields were settings-only placeholders with no player wired up), so this package owns the first real audio playback in the repo.
+
+- `useChatTts(events, options)` — takes the `ChatEvent[]` from `useChatStream()` and speaks only newly-arrived `message`/`donation`/`subscription` events in order (a `ref`-tracked `at` cursor skips whatever was already in the ring buffer at mount, so reconnects/backlogs never get replayed). Toggling `options.enabled` off calls `speechSynthesis.cancel()` immediately. `speechSynthesis` already queues utterances serially, so there's no custom queue to maintain.
+- `buildSpeechText()`/`sanitizeText()` (internal) do the "기본 전처리": URLs become "링크", emoji/pictograph unicode ranges and 4+ repeated characters are stripped/collapsed, text is capped at 100 chars, and a message that sanitizes to empty (pure emoji spam) is silently skipped rather than read as nothing.
+- `speakSample(options)` — fires one utterance immediately with a fixed sample message, independent of `enabled`/the chat stream; this is what `apps/example`'s "테스트 음성 재생" button in `SettingsPanel.tsx` calls so a streamer can preview a voice before turning TTS on or connecting to chat.
+- `useTtsVoices()` — wraps `speechSynthesis.getVoices()` + the `voiceschanged` event (Chromium loads the voice list asynchronously) for a voice-picker `Dropdown`. Voice selection is stored as `AppSettings.ttsVoice` (a `SpeechSynthesisVoice.voiceURI`); empty string means auto-pick a `ko`-language voice if one exists.
+
+Like `app-settings`, this is wired through the existing generic settings plumbing — `ttsEnabled`/`ttsVolume`/`ttsVoice`/`ttsReadNickname` are just more `AppSettings` fields (see `settings-store.ts` below), so no new IPC channel was needed. See `apps/example/src/renderer/src/ChatTestPanel.tsx` (the `useChatTts()` call) and `SettingsPanel.tsx` (the TTS controls + test button) for the reference wiring.
+
 ### Electron plumbing (packages/electron-shared)
 
 This package is **never imported by renderer code**. Renderer talks to it exclusively through `window.api`, which is `PreloadApi` (the return type of `buildPreloadApi()`). The shape is:
@@ -164,7 +176,7 @@ window.api.window.{setFullscreen,setResolution,getState}
 
 `ipc-contract.ts` is the single source of truth for channel name strings (`IPC.settingsGet`, etc.) — it's imported by both the main-process handlers (`apps/*/src/main/ipc-handlers.ts`) and `preload-api.ts`, so a renamed/mistyped channel is a compile error, not a silent runtime mismatch. **Any new IPC channel must be added here first**, then wired in both `ipc-handlers.ts` (main) and `preload-api.ts` (preload) — never call `ipcRenderer.invoke('some-string')` with a raw string anywhere else.
 
-`settings-store.ts` wraps `electron-store`, namespaced per app via `createSettingsStore(appName)` (writes `<appName>-settings.json` under `app.getPath('userData')`). The `AppSettings` shape (`bgmVolume`, `sfxVolume`, `windowMode`, `resolution`) is intentionally the full set every app is expected to need for the settings-gear pattern — extend it here, not per-app, unless a setting is genuinely app-specific.
+`settings-store.ts` wraps `electron-store`, namespaced per app via `createSettingsStore(appName)` (writes `<appName>-settings.json` under `app.getPath('userData')`). The `AppSettings` shape (`bgmVolume`, `sfxVolume`, `windowMode`, `resolution`, `ttsEnabled`, `ttsVolume`, `ttsVoice`, `ttsReadNickname`) is intentionally the full set every app is expected to need for the settings-gear pattern — extend it here, not per-app, unless a setting is genuinely app-specific.
 
 `window-manager.ts` is the only place that's allowed to call `BrowserWindow` resize/fullscreen APIs — window mode and resolution changes always go: renderer → IPC → here, never directly.
 

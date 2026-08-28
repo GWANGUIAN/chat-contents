@@ -1,5 +1,7 @@
+import { useAppSettings } from '@chat-contents/app-settings'
 import type { ChatStreamStatus } from '@chat-contents/chat-client'
 import { useChatStream } from '@chat-contents/chat-client'
+import { useChatTts } from '@chat-contents/tts'
 import { Button, ChatMessage, ChatPanel, Panel, TextInput, Wifi, WifiOff } from '@chat-contents/ui'
 import { useState } from 'react'
 
@@ -20,6 +22,14 @@ export function ChatTestPanel({ baseUrl, initialChannelId = null }: ChatTestPane
   const [inputValue, setInputValue] = useState(initialChannelId ?? '')
   const [channelId, setChannelId] = useState<string | null>(initialChannelId)
   const { status, error, messages } = useChatStream({ baseUrl, channelId })
+  const { settings } = useAppSettings()
+
+  useChatTts(messages, {
+    enabled: settings?.ttsEnabled ?? false,
+    volume: settings?.ttsVolume ?? 70,
+    voiceURI: settings?.ttsVoice ?? '',
+    readNickname: settings?.ttsReadNickname ?? true,
+  })
 
   const handleConnect = () => {
     const trimmed = inputValue.trim()

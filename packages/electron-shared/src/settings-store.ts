@@ -10,6 +10,11 @@ export interface AppSettings {
   sfxVolume: number
   windowMode: 'windowed' | 'fullscreen'
   resolution: WindowResolution
+  ttsEnabled: boolean
+  ttsVolume: number
+  /** SpeechSynthesisVoice.voiceURI. 빈 문자열이면 자동 선택(한국어 음성 우선). */
+  ttsVoice: string
+  ttsReadNickname: boolean
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
@@ -17,6 +22,10 @@ export const DEFAULT_SETTINGS: AppSettings = {
   sfxVolume: 70,
   windowMode: 'windowed',
   resolution: { width: 1280, height: 720 },
+  ttsEnabled: false,
+  ttsVolume: 70,
+  ttsVoice: '',
+  ttsReadNickname: true,
 }
 
 export interface SettingsStore {

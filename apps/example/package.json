@@ -17,6 +17,7 @@
     "@chat-contents/chat-client": "workspace:*",
     "@chat-contents/chat-proxy": "workspace:*",
     "@chat-contents/electron-shared": "workspace:*",
+    "@chat-contents/tts": "workspace:*",
     "@chat-contents/ui": "workspace:*",
     "electron-store": "catalog:",
     "react": "catalog:",

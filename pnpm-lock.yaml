@@ -107,6 +107,9 @@ importers:
       '@chat-contents/electron-shared':
         specifier: workspace:*
         version: link:../../packages/electron-shared
+      '@chat-contents/tts':
+        specifier: workspace:*
+        version: link:../../packages/tts
       '@chat-contents/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -235,6 +238,24 @@ importers:
       electron:
         specifier: 'catalog:'
         version: 33.4.11
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/tts:
+    devDependencies:
+      '@chat-contents/chat-proxy':
+        specifier: workspace:*
+        version: link:../chat-proxy
+      '@chat-contents/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
