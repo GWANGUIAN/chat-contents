@@ -4,6 +4,7 @@ import {
   bootstrapChatProxy,
   createMainWindow,
   createSettingsStore,
+  resolveAppIcon,
 } from '@chat-contents/electron-shared'
 import { app, Menu } from 'electron'
 import { registerIpcHandlers } from './ipc-handlers'
@@ -22,6 +23,11 @@ async function bootstrap(): Promise<void> {
     settings: settingsStore.getAll(),
     preloadPath,
     title: 'Example Stream App',
+    // 설정의 최소 해상도 프리셋(1280x720, packages/app-settings의 STANDARD_RESOLUTIONS)보다
+    // 작게 창을 드래그로 줄일 수 없도록 하한을 둡니다.
+    minWidth: 1280,
+    minHeight: 720,
+    iconPath: resolveAppIcon(join(__dirname, '../../build/icon.png')),
     loadRenderer: (window) => {
       const devServerUrl = process.env.ELECTRON_RENDERER_URL
       if (devServerUrl) {

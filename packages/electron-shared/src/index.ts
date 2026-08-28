@@ -1,3 +1,4 @@
+export { resolveAppIcon } from './app-icon'
 export { bootstrapChatProxy } from './chat-proxy-bootstrap'
 export type { SettingsGetRequest, SettingsSetRequest, WindowState } from './ipc-contract'
 export { IPC } from './ipc-contract'

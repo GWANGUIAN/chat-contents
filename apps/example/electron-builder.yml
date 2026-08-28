@@ -6,6 +6,7 @@ files:
   - out/**/*
   - package.json
 win:
+  icon: build/icon.png
   target:
     - target: portable
       arch:
@@ -13,3 +14,6 @@ win:
 portable:
   artifactName: ${productName}-${version}-portable.exe
 asar: true
+extraResources:
+  - from: build/icon.png
+    to: icon.png

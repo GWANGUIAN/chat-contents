@@ -182,6 +182,10 @@ window.api.window.{setFullscreen,setResolution,getState}
 
 `window-manager.ts` is the only place that's allowed to call `BrowserWindow` resize/fullscreen APIs — window mode and resolution changes always go: renderer → IPC → here, never directly.
 
+**App icon (exe icon + taskbar/titlebar icon):** each app owns exactly one icon source image at `<app>/build/icon.png` (square, 256x256+ recommended, PNG — electron-builder auto-converts PNG to `.ico` internally, so hand-producing an `.ico` isn't necessary) and wires it into two places:
+- `electron-builder.yml`: `win.icon: build/icon.png` sets the packaged `.exe`'s file icon, plus `extraResources: [{ from: build/icon.png, to: icon.png }]` to copy that same file next to the exe at `resources/icon.png` in the packaged build (the `build/` folder itself is a build-tool input, not part of `files`, so it isn't otherwise reachable at runtime from inside the packaged app).
+- `src/main/index.ts`: `resolveAppIcon()` (`@chat-contents/electron-shared`, `app-icon.ts`) resolves the right path for the current mode — the `build/` folder path in dev, `process.resourcesPath` (the `extraResources` copy) once `app.isPackaged` — and the result is passed as `createMainWindow({ iconPath })`, which sets `BrowserWindow`'s `icon` option (governs the taskbar icon and window titlebar icon in both dev and packaged builds; don't rely on Windows inheriting the icon from the exe automatically since that doesn't happen in `electron-vite dev`, where the app runs under a generic `electron.exe`).
+
 **`src/preload/index.ts` must import `buildPreloadApi` from the `@chat-contents/electron-shared/preload-api` subpath, never from the package root (`@chat-contents/electron-shared`).** The root barrel (`index.ts`) also re-exports `bootstrapChatProxy` (`chat-proxy-bootstrap.ts`), which pulls in `@chat-contents/chat-proxy` and Electron's `app` module — both main-process-only. If preload imports the barrel, its bundle drags that code in too; `@chat-contents/chat-proxy` (correctly, since preload has no reason to need it) isn't in preload's `externalizeDepsPlugin` exclude list, so it gets emitted as a bare `require('@chat-contents/chat-proxy')` — which has no compiled JS to resolve, and **fails silently at runtime only in the packaged asar build** (`electron-vite dev`/unpacked runs can mask this). Symptom: blank white renderer, `window.api` undefined, no error unless you're watching `webContents.on('preload-error')`. If `preload-api.ts` ever needs a new dependency, keep it dependency-light (currently only `ipc-contract.ts`, which has none) — anything heavier belongs behind the main-only barrel, not here.
 
 ### Scaffolding a new content app
@@ -192,7 +196,7 @@ Copy `apps/example`'s structure. The parts that must not change:
 - `electron-builder.yml`'s `win.target: portable` — the whole distribution model is "one `.exe`, no installer, no auto-update." Don't add a `publish` block or switch targets without discussing it; it's a deliberate v1 constraint, not an oversight.
 - `src/main/index.ts`'s `Menu.setApplicationMenu(null)` call — these are custom-UI streamer apps, not traditional desktop software, so Electron's default File/Edit/View/Window/Help menu bar is always removed.
 
-What *should* change per app: the `accent` color passed to `ThemeProvider`, `productName`/`appId` in `electron-builder.yml`, the window title, and obviously the renderer UI itself.
+What *should* change per app: the `accent` color passed to `ThemeProvider`, `productName`/`appId` in `electron-builder.yml`, the window title, the `build/icon.png` source image (see the app-icon note above), and obviously the renderer UI itself.
 
 ## Deliberately out of scope for now (do not build unless asked)
 
