@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json"
   },
   "dependencies": {
+    "@chat-contents/app-settings": "workspace:*",
     "@chat-contents/chat-client": "workspace:*",
     "@chat-contents/chat-proxy": "workspace:*",
     "@chat-contents/electron-shared": "workspace:*",

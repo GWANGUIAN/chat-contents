@@ -80,6 +80,9 @@ importers:
 
   apps/example:
     dependencies:
+      '@chat-contents/app-settings':
+        specifier: workspace:*
+        version: link:../../packages/app-settings
       '@chat-contents/chat-client':
         specifier: workspace:*
         version: link:../../packages/chat-client
@@ -138,6 +141,24 @@ importers:
       vite:
         specifier: 'catalog:'
         version: 6.4.3(@types/node@22.20.1)
+
+  packages/app-settings:
+    devDependencies:
+      '@chat-contents/config':
+        specifier: workspace:*
+        version: link:../config
+      '@chat-contents/electron-shared':
+        specifier: workspace:*
+        version: link:../electron-shared
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
 
   packages/chat-client:
     devDependencies:
