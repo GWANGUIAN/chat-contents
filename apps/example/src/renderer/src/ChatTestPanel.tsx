@@ -63,7 +63,7 @@ export function ChatTestPanel({ baseUrl, initialChannelId = null }: ChatTestPane
           if (message.type === 'donation') {
             return (
               <ChatMessage key={key}>
-                🎁 {message.user.nickname}님이 {message.amount} 별풍선을 후원했습니다.
+                🎁 {message.user.nickname}님이 별풍선 {message.amount}개를 후원했습니다.
               </ChatMessage>
             )
           }
