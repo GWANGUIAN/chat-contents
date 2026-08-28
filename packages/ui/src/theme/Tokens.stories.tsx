@@ -26,6 +26,7 @@ const colors: { token: string; background?: string }[] = [
   { token: '--bg-gradient-2' },
   { token: '--bg-gradient-3' },
   { token: '--dot-color' },
+  { token: '--dot-color-accent' },
   { token: '--border-faint' },
   { token: '--border-default' },
   { token: '--border-strong' },

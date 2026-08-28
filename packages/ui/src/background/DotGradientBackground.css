@@ -24,9 +24,15 @@
   position: absolute;
   inset: 0;
   opacity: var(--dot-opacity);
-  background-image: radial-gradient(circle, var(--dot-color) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  background-position: 0 0;
+  /* 두 번째 레이어는 첫 레이어와 같은 22px 격자를 절반(11px)만큼 어긋나게 찍어서,
+     흰 점 4개가 이루는 사각형의 정중앙에 accent색 점이 놓이도록 합니다. */
+  background-image:
+    radial-gradient(circle, var(--dot-color) 1.5px, transparent 1.5px),
+    radial-gradient(circle, var(--dot-color-accent) 1.5px, transparent 1.5px);
+  background-size: 30px 30px;
+  background-position:
+    0 0,
+    15px 15px;
   mask-image: radial-gradient(ellipse 80% 65% at 50% 42%, #000 55%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 42%, #000 55%, transparent 100%);
 }

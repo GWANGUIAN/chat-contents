@@ -39,6 +39,8 @@ export interface ThemeTokenOverrides {
   bgGradient2?: string
   bgGradient3?: string
   dotColor?: string
+  /** 흰 점 격자 사이(4개가 이루는 사각형 정중앙)에 얹히는 두 번째 점 격자 색. 기본은 accent를 따라갑니다. */
+  dotColorAccent?: string
   /** `rgba(var(--shadow-color), alpha)`로 쓰이는 "R, G, B" 트리플렛 문자열 (예: "52, 211, 153"). */
   shadowColor?: string
   /** 하나의 진한 "잉크" 색에서 파생되는 헤어라인 보더 3단계 + ChatPanel 등의 backdrop 틴트. */
@@ -76,6 +78,7 @@ const TOKEN_OVERRIDE_VARS: Record<keyof ThemeTokenOverrides, string> = {
   bgGradient2: '--bg-gradient-2',
   bgGradient3: '--bg-gradient-3',
   dotColor: '--dot-color',
+  dotColorAccent: '--dot-color-accent',
   shadowColor: '--shadow-color',
   borderFaint: '--border-faint',
   borderDefault: '--border-default',
@@ -141,6 +144,31 @@ export function ThemeProvider({
     result.display = 'contents'
     return result as CSSProperties
   }, [accent, fontFamily, tokens])
+
+  useEffect(() => {
+    // tokens.css's global scrollbar rule (`* { scrollbar-color: var(--accent) ... }`,
+    // `*::-webkit-scrollbar-thumb`) matches every element, including `html`/`body` —
+    // but those are ANCESTORS of this component's wrapper div, so they can't inherit
+    // the `--accent`/`--accent-border` set on it (custom properties only inherit
+    // downward). Without this, the document-level scrollbar always renders with
+    // tokens.css's default pink instead of the app's injected accent, even though
+    // every scrollbar inside the app (Panel, ChatPanel, etc. — descendants of this
+    // div) picks it up correctly. Mirror the same values onto :root so ancestor-level
+    // rendering (like the whole-document scrollbar) sees the injected theme too —
+    // same fix shape as the --shadow-panel/--font-family direct-override cases above.
+    const root = document.documentElement
+    const entries = Object.entries(style).filter(
+      ([key]) => key !== 'display' && key !== 'fontFamily',
+    ) as [string, string][]
+    for (const [key, value] of entries) {
+      root.style.setProperty(key, value)
+    }
+    return () => {
+      for (const [key] of entries) {
+        root.style.removeProperty(key)
+      }
+    }
+  }, [style])
 
   return (
     <PortalContainerContext.Provider value={portalContainer}>

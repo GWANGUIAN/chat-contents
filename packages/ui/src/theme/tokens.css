@@ -51,6 +51,9 @@
   --bg-gradient-2: #ffeef7;
   --bg-gradient-3: #f6f1ff;
   --dot-color: #ffffff;
+  /* 흰 점 격자 사이(4개가 이루는 사각형 정중앙)에 얹히는 두 번째 점 격자 색.
+     기본값은 accent-soft를 따라가 앱마다 별도 설정 없이 은은하게 어울리는 색이 나옵니다. */
+  --dot-color-accent: var(--accent-soft);
   --dot-opacity: 0.55;
 
   --surface-panel: #ffffffee;

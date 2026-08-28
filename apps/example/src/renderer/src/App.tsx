@@ -47,6 +47,8 @@ const THEME_TOKENS: ThemeTokenOverrides = {
   bgGradient1: '#F7FEFB',
   bgGradient2: ACCENT_SOFT,
   bgGradient3: ACCENT_SOFTER,
+  // emerald-200 — 점 격자 사이에 얹히는 두 번째 점이라 은은하게 연한 톤으로 맞췄습니다.
+  dotColorAccent: '#A7F3D0',
   shadowColor: '52, 211, 153',
   borderFaint: '#064E3B0f',
   borderDefault: '#064E3B1c',
