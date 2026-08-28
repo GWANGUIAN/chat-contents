@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ui-storybook",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@chat-contents/ui", "storybook"],
+      "port": 6006
+    }
+  ]
+}

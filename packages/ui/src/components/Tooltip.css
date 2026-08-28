@@ -1,0 +1,27 @@
+.cc-tooltip__content {
+  z-index: 80;
+  max-width: 280px;
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  background: var(--text-primary);
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: var(--shadow-float);
+  animation: cc-tooltip-fade-in 0.12s ease;
+}
+
+.cc-tooltip__arrow {
+  fill: var(--text-primary);
+}
+
+@keyframes cc-tooltip-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

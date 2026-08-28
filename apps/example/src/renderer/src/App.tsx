@@ -1,13 +1,20 @@
 import {
+  ArrowLeft,
   DotGradientBackground,
   IconButton,
   Settings,
   SlideInPanel,
   ThemeProvider,
+  ToastProvider,
 } from '@chat-contents/ui'
 import { useEffect, useRef, useState } from 'react'
 import { ChatTestPanel } from './ChatTestPanel'
+import { OnboardingFlow } from './OnboardingFlow'
 import { SettingsPanel } from './SettingsPanel'
+
+/** 온보딩을 다시 보여줄지 여부를 이 브라우저 로컬 저장소에만 기록합니다(앱 전용 값이라
+ * electron-shared의 공통 AppSettings에는 넣지 않습니다 — CLAUDE.md 참고). */
+const ONBOARDING_STORAGE_KEY = 'chat-contents-example:onboarding-complete'
 
 /** 스트리머별로 이 값만 바꾸면 전체 UI 색상이 따라옵니다. */
 const ACCENT_COLOR = '#10B981'
@@ -51,36 +58,65 @@ const FONT_FAMILY =
 export function App() {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [chatProxyPort, setChatProxyPort] = useState<number | null>(null)
+  const [onboardingComplete, setOnboardingComplete] = useState(
+    () => localStorage.getItem(ONBOARDING_STORAGE_KEY) === 'true',
+  )
+  const [initialChannelId, setInitialChannelId] = useState<string | null>(null)
   const settingsTriggerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     void window.api.chatProxy.getPort().then(setChatProxyPort)
   }, [])
 
+  const handleOnboardingComplete = (channelId: string | null) => {
+    localStorage.setItem(ONBOARDING_STORAGE_KEY, 'true')
+    setInitialChannelId(channelId)
+    setOnboardingComplete(true)
+  }
+
   return (
     <ThemeProvider accent={ACCENT_COLOR} fontFamily={FONT_FAMILY} tokens={THEME_TOKENS}>
-      <DotGradientBackground />
-      <div className="app-shell">
-        <ChatTestPanel baseUrl={chatProxyPort ? `http://127.0.0.1:${chatProxyPort}` : null} />
+      <ToastProvider>
+        <DotGradientBackground />
+        <div className="app-shell">
+          {onboardingComplete ? (
+            <>
+              <ChatTestPanel
+                baseUrl={chatProxyPort ? `http://127.0.0.1:${chatProxyPort}` : null}
+                initialChannelId={initialChannelId}
+              />
 
-        <IconButton
-          ref={settingsTriggerRef}
-          aria-label="설정 열기"
-          className="app-shell__settings-trigger"
-          onClick={() => setSettingsOpen((prev) => !prev)}
-        >
-          <Settings size={26} />
-        </IconButton>
+              <IconButton
+                aria-label="온보딩으로 돌아가기"
+                className="app-shell__back-trigger"
+                onClick={() => setOnboardingComplete(false)}
+              >
+                <ArrowLeft size={24} />
+              </IconButton>
 
-        <SlideInPanel
-          open={settingsOpen}
-          onClose={() => setSettingsOpen(false)}
-          triggerRef={settingsTriggerRef}
-          title="설정"
-        >
-          <SettingsPanel />
-        </SlideInPanel>
-      </div>
+              <IconButton
+                ref={settingsTriggerRef}
+                aria-label="설정 열기"
+                className="app-shell__settings-trigger"
+                onClick={() => setSettingsOpen((prev) => !prev)}
+              >
+                <Settings size={26} />
+              </IconButton>
+
+              <SlideInPanel
+                open={settingsOpen}
+                onClose={() => setSettingsOpen(false)}
+                triggerRef={settingsTriggerRef}
+                title="설정"
+              >
+                <SettingsPanel />
+              </SlideInPanel>
+            </>
+          ) : (
+            <OnboardingFlow onComplete={handleOnboardingComplete} />
+          )}
+        </div>
+      </ToastProvider>
     </ThemeProvider>
   )
 }

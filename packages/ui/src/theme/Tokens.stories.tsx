@@ -30,6 +30,8 @@ const colors: { token: string; background?: string }[] = [
   { token: '--border-default' },
   { token: '--border-strong' },
   { token: '--backdrop' },
+  { token: '--success' },
+  { token: '--danger' },
   // --shadow-color is a bare "R, G, B" triplet (consumed as rgba(var(--shadow-color), alpha)),
   // not a paintable color on its own — wrap it in rgb() to render a swatch.
   { token: '--shadow-color', background: 'rgb(var(--shadow-color))' },
@@ -111,6 +113,13 @@ export const Overview: Story = {
               <div style={{ fontSize: 11, marginTop: 4 }}>{token}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section>
+        <h3>Motion</h3>
+        <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+          --stepper-transition-duration (Stepper 단계 전환 애니메이션 길이, 기본 0.3s)
         </div>
       </section>
 

@@ -1,7 +1,11 @@
 export {
+  AlertCircle,
+  ArrowLeft,
   Check,
+  CheckCircle2,
   ChevronDown,
   ChevronUp,
+  Info,
   Maximize,
   Minimize,
   Settings,

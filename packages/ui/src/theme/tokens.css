@@ -20,6 +20,9 @@
   /* 글래스모피즘 블러 */
   --glass-blur: 18px;
 
+  /* Stepper 단계 전환 애니메이션 길이 */
+  --stepper-transition-duration: 0.3s;
+
   /* 간격 스케일 */
   --space-1: 4px;
   --space-2: 8px;
@@ -64,6 +67,10 @@
   --text-muted: #a181a6;
 
   --backdrop: #2c142499;
+
+  /* 시맨틱 상태 색 — accent와 무관하게 항상 이 의미로 고정(성공=초록, 위험=빨강) */
+  --success: #16a34a;
+  --danger: #d1435f;
 
   /* accent — ThemeProvider가 앱/스트리머별로 오버라이드하는 축 */
   --accent: #ff6fae;

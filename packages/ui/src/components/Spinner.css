@@ -1,0 +1,17 @@
+.cc-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  border: 3px solid var(--border-default);
+  border-top-color: var(--accent);
+  animation: cc-spinner-rotate 0.7s linear infinite;
+}
+
+@keyframes cc-spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

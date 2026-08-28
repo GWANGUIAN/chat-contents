@@ -1,0 +1,55 @@
+.cc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+  border: var(--border-width-hairline) solid transparent;
+}
+
+/* tone별 색상을 --badge-color 하나로 정의하고, variant가 그 색을 어떻게 쓸지 결정합니다. */
+.cc-badge--accent {
+  --badge-color: var(--accent);
+  --badge-color-text: var(--accent-text);
+  --badge-color-soft: var(--accent-soft);
+}
+
+.cc-badge--neutral {
+  --badge-color: var(--text-secondary);
+  --badge-color-text: var(--text-secondary);
+  --badge-color-soft: var(--surface-panel-alt);
+}
+
+.cc-badge--success {
+  --badge-color: var(--success);
+  --badge-color-text: var(--success);
+  --badge-color-soft: color-mix(in srgb, var(--success) 16%, transparent);
+}
+
+.cc-badge--danger {
+  --badge-color: var(--danger);
+  --badge-color-text: var(--danger);
+  --badge-color-soft: color-mix(in srgb, var(--danger) 16%, transparent);
+}
+
+.cc-badge--solid {
+  background: var(--badge-color);
+  border-color: var(--badge-color);
+  color: #ffffff;
+}
+
+.cc-badge--soft {
+  background: var(--badge-color-soft);
+  color: var(--badge-color-text);
+}
+
+.cc-badge--outline {
+  background: transparent;
+  border-color: var(--badge-color);
+  color: var(--badge-color-text);
+}

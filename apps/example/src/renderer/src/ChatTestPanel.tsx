@@ -5,6 +5,8 @@ import { useState } from 'react'
 
 export interface ChatTestPanelProps {
   baseUrl: string | null
+  /** 온보딩 등에서 미리 입력받은 채널 ID로 초기 연동. 없으면 null. */
+  initialChannelId?: string | null
 }
 
 const STATUS_LABEL: Record<ChatStreamStatus, string> = {
@@ -14,9 +16,9 @@ const STATUS_LABEL: Record<ChatStreamStatus, string> = {
   error: '연결 실패',
 }
 
-export function ChatTestPanel({ baseUrl }: ChatTestPanelProps) {
-  const [inputValue, setInputValue] = useState('')
-  const [channelId, setChannelId] = useState<string | null>(null)
+export function ChatTestPanel({ baseUrl, initialChannelId = null }: ChatTestPanelProps) {
+  const [inputValue, setInputValue] = useState(initialChannelId ?? '')
+  const [channelId, setChannelId] = useState<string | null>(initialChannelId)
   const { status, error, messages } = useChatStream({ baseUrl, channelId })
 
   const handleConnect = () => {

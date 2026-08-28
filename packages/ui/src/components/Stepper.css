@@ -1,0 +1,45 @@
+.cc-stepper {
+  display: block;
+  width: 100%;
+}
+
+.cc-stepper__viewport {
+  position: relative;
+  display: grid;
+}
+
+.cc-stepper__panel {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.cc-stepper__panel--leaving {
+  pointer-events: none;
+  animation: cc-stepper-fade-out-left var(--stepper-transition-duration, 0.3s) ease forwards;
+}
+
+.cc-stepper__panel--entering {
+  animation: cc-stepper-fade-in-right var(--stepper-transition-duration, 0.3s) ease forwards;
+}
+
+@keyframes cc-stepper-fade-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--space-6) * -1));
+  }
+}
+
+@keyframes cc-stepper-fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-6));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
