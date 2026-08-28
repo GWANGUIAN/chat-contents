@@ -4,6 +4,7 @@ export interface AccentShades {
   accentSoft: string
   accentSofter: string
   accentText: string
+  accentBorder: string
 }
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -89,6 +90,10 @@ function clampPercent(v: number): number {
   return Math.max(0, Math.min(100, v))
 }
 
+function clampRange(v: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, v))
+}
+
 function hexToRgba(hex: string, alpha: number): string {
   const [r, g, b] = hexToRgb(hex)
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
@@ -103,6 +108,9 @@ export function deriveAccentShades(hex: string): AccentShades {
   const accentHover = hslToHex(h, s, clampPercent(l - 8))
   // 밝은 배경 위 텍스트로도 읽히도록 채도는 유지하되 명도를 낮춥니다.
   const accentText = hslToHex(h, Math.min(s, 85), clampPercent(Math.min(l, 42)))
+  // 두꺼운 보더용 "잉크" 톤: 채도를 끌어올리고 명도를 깊게 낮춰 accent와 같은
+  // 색상군이면서도 진하게 대비되도록 합니다 (스트리머 accent마다 보더색이 따라옴).
+  const accentBorder = hslToHex(h, Math.max(s, 50), clampRange(l, 16, 24))
 
   return {
     accent: hex,
@@ -110,5 +118,6 @@ export function deriveAccentShades(hex: string): AccentShades {
     accentSoft: hexToRgba(hex, 0.16),
     accentSofter: hexToRgba(hex, 0.07),
     accentText,
+    accentBorder,
   }
 }

@@ -1,0 +1,38 @@
+.cc-chat-message {
+  display: flex;
+  align-items: baseline;
+  /* 닉네임 + 채팅은 항상 한 줄로 보여야 합니다. */
+  flex-wrap: nowrap;
+  gap: var(--space-2);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.cc-chat-message__nickname,
+.cc-chat-message__text {
+  /* 어떤 배경 위에 있어도 읽히도록 검은 외곽선을 둡니다. */
+  -webkit-text-stroke: 1.25px #000000;
+}
+
+.cc-chat-message__nickname {
+  flex-shrink: 0;
+  font-weight: 800;
+}
+
+.cc-chat-message__nickname--accent {
+  color: var(--accent-text);
+}
+
+.cc-chat-message__text {
+  color: #ffffff;
+  flex: 1 1 auto;
+  min-width: 0;
+  /* 한 줄을 넘는 텍스트는 항상 잘립니다 — truncate는 "..." 표시 여부만 결정합니다. */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.cc-chat-message--truncate .cc-chat-message__text {
+  text-overflow: ellipsis;
+}

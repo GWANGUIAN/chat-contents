@@ -3,15 +3,16 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
+  border: var(--border-width-strong) solid transparent;
+  border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-5);
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: 800;
+  font-size: var(--font-size-md);
   transition:
     transform 0.12s ease,
     background-color 0.15s ease,
-    box-shadow 0.15s ease;
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .cc-button:active {
@@ -24,24 +25,26 @@
   transform: none;
 }
 
+/* 꽉 찬 accent 배경 + 진한 accent-border. 강조도가 가장 높은 액션용. */
 .cc-button--primary {
   background: var(--accent);
+  border-color: var(--accent-border);
   color: #ffffff;
-  box-shadow: var(--shadow-float);
 }
 
 .cc-button--primary:hover:not(:disabled) {
   background: var(--accent-hover);
 }
 
+/* 흰 배경 + 진한 accent-border의 "윤곽선" 버튼. 참고 이미지의 알약형 버튼과 같은 톤. */
 .cc-button--secondary {
-  background: var(--surface-panel-alt);
-  border-color: var(--border-default);
-  color: var(--text-primary);
+  background: var(--surface-panel);
+  border-color: var(--accent-border);
+  color: var(--accent-text);
 }
 
 .cc-button--secondary:hover:not(:disabled) {
-  background: var(--surface-hover);
+  background: var(--accent-softer);
 }
 
 .cc-button--ghost {

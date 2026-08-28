@@ -1,0 +1,30 @@
+.cc-title {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.cc-title--sm {
+  font-size: var(--font-size-md);
+}
+
+.cc-title--md {
+  font-size: var(--font-size-lg);
+}
+
+.cc-title--lg {
+  font-size: var(--font-size-xl);
+}
+
+.cc-title--xl {
+  font-size: var(--font-size-xxl);
+}
+
+.cc-title--default {
+  color: var(--text-primary);
+}
+
+.cc-title--accent {
+  color: var(--accent-text);
+}

@@ -1,6 +1,6 @@
 import type { ChatStreamStatus } from '@chat-contents/chat-client'
 import { useChatStream } from '@chat-contents/chat-client'
-import { Button, Panel, TextInput, Wifi, WifiOff } from '@chat-contents/ui'
+import { Button, ChatMessage, ChatPanel, Panel, TextInput, Wifi, WifiOff } from '@chat-contents/ui'
 import { useState } from 'react'
 
 export interface ChatTestPanelProps {
@@ -48,30 +48,29 @@ export function ChatTestPanel({ baseUrl }: ChatTestPanelProps) {
         </span>
       </div>
 
-      <ul className="chat-test-panel__messages">
-        {messages.map((message, index) => (
-          <li
-            key={`${message.at}-${index}`}
-            className={`chat-test-panel__message chat-test-panel__message--${message.type}`}
-          >
-            {message.type === 'message' && (
-              <>
-                <strong>{message.user.nickname}</strong>
-                <span>{message.text}</span>
-              </>
-            )}
-            {message.type === 'donation' && (
-              <span>
+      <ChatPanel maxHeight={320}>
+        {messages.map((message, index) => {
+          const key = `${message.at}-${index}`
+          if (message.type === 'message') {
+            return (
+              <ChatMessage key={key} nickname={message.user.nickname}>
+                {message.text}
+              </ChatMessage>
+            )
+          }
+          if (message.type === 'donation') {
+            return (
+              <ChatMessage key={key}>
                 🎁 {message.user.nickname}님이 {message.amount} 별풍선을 후원했습니다.
-              </span>
-            )}
-            {message.type === 'subscription' && (
-              <span>⭐ {message.user.nickname}님이 구독했습니다.</span>
-            )}
-            {message.type === 'system' && <span>{message.text}</span>}
-          </li>
-        ))}
-      </ul>
+              </ChatMessage>
+            )
+          }
+          if (message.type === 'subscription') {
+            return <ChatMessage key={key}>⭐ {message.user.nickname}님이 구독했습니다.</ChatMessage>
+          }
+          return <ChatMessage key={key}>{message.text}</ChatMessage>
+        })}
+      </ChatPanel>
     </Panel>
   )
 }

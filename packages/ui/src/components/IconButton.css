@@ -5,21 +5,46 @@
   width: 48px;
   height: 48px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border-faint);
-  background: var(--surface-panel);
-  color: var(--text-secondary);
+  border: var(--border-width-strong) solid transparent;
   box-shadow: var(--shadow-panel);
   transition:
     transform 0.15s ease,
     color 0.15s ease,
-    background-color 0.15s ease;
-}
-
-.cc-icon-button:hover {
-  color: var(--accent-text);
-  background: var(--accent-softer);
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .cc-icon-button:active {
   transform: scale(0.94);
+}
+
+.cc-icon-button--primary {
+  background: var(--accent);
+  border-color: var(--accent-border);
+  color: #ffffff;
+}
+
+.cc-icon-button--primary:hover {
+  background: var(--accent-hover);
+}
+
+.cc-icon-button--secondary {
+  background: var(--surface-panel);
+  border-color: var(--accent-border);
+  color: var(--accent-text);
+}
+
+.cc-icon-button--secondary:hover {
+  background: var(--accent-softer);
+}
+
+.cc-icon-button--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-secondary);
+}
+
+.cc-icon-button--ghost:hover {
+  background: var(--accent-softer);
+  color: var(--accent-text);
 }

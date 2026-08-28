@@ -5,7 +5,12 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./tokens.css": "./src/theme/tokens.css"
+    "./tokens.css": "./src/theme/tokens.css",
+    "./fonts.css": "./src/theme/fonts.css"
+  },
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "lucide-react": "catalog:"
@@ -15,8 +20,12 @@
   },
   "devDependencies": {
     "@chat-contents/config": "workspace:*",
+    "@storybook/react-vite": "catalog:",
     "@types/react": "catalog:",
     "react": "catalog:",
-    "typescript": "catalog:"
+    "react-dom": "catalog:",
+    "storybook": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
   }
 }

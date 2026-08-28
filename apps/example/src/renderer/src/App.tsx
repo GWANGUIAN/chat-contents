@@ -5,7 +5,7 @@ import {
   SlideInPanel,
   ThemeProvider,
 } from '@chat-contents/ui'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ChatTestPanel } from './ChatTestPanel'
 import { SettingsPanel } from './SettingsPanel'
 
@@ -15,6 +15,7 @@ const ACCENT_COLOR = '#ff6fae'
 export function App() {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [chatProxyPort, setChatProxyPort] = useState<number | null>(null)
+  const settingsTriggerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     void window.api.chatProxy.getPort().then(setChatProxyPort)
@@ -27,6 +28,7 @@ export function App() {
         <ChatTestPanel baseUrl={chatProxyPort ? `http://127.0.0.1:${chatProxyPort}` : null} />
 
         <IconButton
+          ref={settingsTriggerRef}
           aria-label="설정 열기"
           className="app-shell__settings-trigger"
           onClick={() => setSettingsOpen((prev) => !prev)}
@@ -34,7 +36,12 @@ export function App() {
           <Settings size={20} />
         </IconButton>
 
-        <SlideInPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} title="설정">
+        <SlideInPanel
+          open={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          triggerRef={settingsTriggerRef}
+          title="설정"
+        >
           <SettingsPanel />
         </SlideInPanel>
       </div>

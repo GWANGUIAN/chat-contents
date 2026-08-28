@@ -1,11 +1,12 @@
 .cc-text-input {
   width: 100%;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border-default);
-  background: var(--surface-input);
+  border: var(--border-width-strong) solid var(--accent-border);
+  background: #ffffff;
   color: var(--text-primary);
   padding: var(--space-3) var(--space-4);
-  font-size: 14px;
+  font-size: var(--font-size-md);
+  font-weight: 600;
   outline: none;
   transition:
     border-color 0.15s ease,

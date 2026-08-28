@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
 }
 
@@ -46,7 +46,7 @@
   height: 18px;
   border-radius: 50%;
   background: #ffffff;
-  border: 3px solid var(--accent);
+  border: 3px solid var(--accent-border);
   box-shadow: var(--shadow-float);
 }
 
@@ -55,6 +55,6 @@
   height: 18px;
   border-radius: 50%;
   background: #ffffff;
-  border: 3px solid var(--accent);
+  border: 3px solid var(--accent-border);
   box-shadow: var(--shadow-float);
 }

@@ -1,32 +1,4 @@
-.cc-slide-in {
-  position: fixed;
-  bottom: var(--space-6);
-  z-index: 40;
-  width: min(340px, calc(100vw - var(--space-6) * 2));
-  pointer-events: none;
-  opacity: 0;
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
-}
-
-.cc-slide-in--bottom-left {
-  left: var(--space-6);
-  transform: translate(-8px, 12px);
-}
-
-.cc-slide-in--bottom-right {
-  right: var(--space-6);
-  transform: translate(8px, 12px);
-}
-
-.cc-slide-in--open {
-  pointer-events: auto;
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-.cc-slide-in__panel {
+.cc-chat-panel {
   display: flex;
   flex-direction: column;
   /* 스크롤바 자체는 이 요소(패딩이 있는 쪽)의 padding에 영향받지 않고 항상 자식
@@ -34,14 +6,17 @@
      멈추게" 하려면 자식이 아니라 여기(부모)에 위아래 padding을 둬야 합니다.
      좌우는 0으로 없애서 안쪽 스크롤 래퍼가 보더에 딱 붙게 합니다. */
   padding: 18px 0;
-  max-height: min(600px, calc(100vh - var(--space-6) * 2));
+  border-radius: var(--radius-lg);
+  background: var(--backdrop);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
 }
 
-.cc-slide-in__scroll {
+.cc-chat-panel__scroll {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-3);
   /* 여기 padding은 텍스트 가독성용일 뿐 — 스크롤바 위치/길이에는 영향 없습니다. */
   padding: 0 var(--space-5);
   overflow-y: auto;

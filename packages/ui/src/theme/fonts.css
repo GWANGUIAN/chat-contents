@@ -1,0 +1,11 @@
+/*
+ * 로컬에 벤더링한 폰트 파일입니다. CDN을 직접 참조하지 않는 이유:
+ * 이 앱들은 오프라인에서도 도는 패키징된 .exe라 CDN이 막히면 조용히 시스템 폰트로
+ * 폴백됩니다. 나중에 폰트가 추가되면 이 파일에 @font-face 블록을 더 추가하세요.
+ */
+@font-face {
+  font-family: "Cafe24Surround";
+  src: url("./assets/Cafe24Surround.woff") format("woff");
+  font-weight: normal;
+  font-display: swap;
+}
