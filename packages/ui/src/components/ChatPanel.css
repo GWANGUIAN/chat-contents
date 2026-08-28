@@ -1,4 +1,5 @@
 .cc-chat-panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   /* 스크롤바 자체는 이 요소(패딩이 있는 쪽)의 padding에 영향받지 않고 항상 자식
@@ -21,4 +22,55 @@
   padding: 0 var(--space-5);
   overflow-y: auto;
   min-height: 0;
+}
+
+/* 맨 아래가 아닐 때만 뜨는 "새 메시지로 이동" 플로팅 버튼. 너비는 채팅창보다
+   살짝 좁게 고정, 배경은 채팅 목록과 동일, 보더는 진한 회색으로 눈에 띄지만
+   accent색과는 구분되게 합니다. */
+.cc-chat-panel__jump {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-3);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: calc(100% - var(--space-4) * 2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-strong) solid #5c5c5c;
+  background: var(--backdrop);
+  box-shadow: var(--shadow-float);
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    background-color 0.15s ease;
+}
+
+.cc-chat-panel__jump:hover {
+  background: #2c1424cc;
+}
+
+.cc-chat-panel__jump:active {
+  transform: translateX(-50%) scale(0.96);
+}
+
+.cc-chat-panel__jump-preview {
+  display: inline-flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ChatMessage는 방송 오버레이용으로 폰트가 큼직해서, 이 작은 플로팅 버튼
+   안에서는 눈에 맞게 줄여줍니다. */
+.cc-chat-panel__jump-preview .cc-chat-message {
+  font-size: var(--font-size-sm);
+  gap: var(--space-1);
+}
+
+.cc-chat-panel__jump-icon {
+  flex-shrink: 0;
+  color: #ffffff;
 }

@@ -1,4 +1,4 @@
-import { Button, Maximize, Slider, Volume2, VolumeX } from '@chat-contents/ui'
+import { Button, Dropdown, Maximize, Slider, Volume2, VolumeX } from '@chat-contents/ui'
 import { useEffect, useState } from 'react'
 
 interface ResolutionOption {
@@ -8,10 +8,15 @@ interface ResolutionOption {
 }
 
 const RESOLUTIONS: ResolutionOption[] = [
-  { label: '1280 × 720', width: 1280, height: 720 },
-  { label: '1600 × 900', width: 1600, height: 900 },
-  { label: '1920 × 1080', width: 1920, height: 1080 },
+  { label: '1280 x 720', width: 1280, height: 720 },
+  { label: '1600 x 900', width: 1600, height: 900 },
+  { label: '1920 x 1080', width: 1920, height: 1080 },
 ]
+
+const RESOLUTION_OPTIONS = RESOLUTIONS.map((resolution, index) => ({
+  value: String(index),
+  label: resolution.label,
+}))
 
 export function SettingsPanel() {
   const [bgmVolume, setBgmVolume] = useState(70)
@@ -59,14 +64,14 @@ export function SettingsPanel() {
         label="배경음악 볼륨"
         value={bgmVolume}
         onChange={handleBgmChange}
-        icon={bgmVolume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
+        icon={bgmVolume === 0 ? <VolumeX size={24} /> : <Volume2 size={24} />}
         formatValue={(value) => `${Math.round(value)}%`}
       />
       <Slider
         label="효과음 볼륨"
         value={sfxVolume}
         onChange={handleSfxChange}
-        icon={sfxVolume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
+        icon={sfxVolume === 0 ? <VolumeX size={24} /> : <Volume2 size={24} />}
         formatValue={(value) => `${Math.round(value)}%`}
       />
 
@@ -83,7 +88,7 @@ export function SettingsPanel() {
             variant={fullscreen ? 'primary' : 'secondary'}
             onClick={() => setFullscreen(true)}
           >
-            <Maximize size={16} />
+            <Maximize size={22} />
             전체화면
           </Button>
         </div>
@@ -91,18 +96,13 @@ export function SettingsPanel() {
 
       <div className="settings-panel__section">
         <span className="settings-panel__section-label">해상도</span>
-        <select
-          className="settings-panel__select"
-          value={resolutionIndex}
+        <Dropdown
+          aria-label="해상도"
+          options={RESOLUTION_OPTIONS}
+          value={String(resolutionIndex)}
           disabled={fullscreen}
-          onChange={(event) => setResolutionIndex(Number(event.target.value))}
-        >
-          {RESOLUTIONS.map((resolution, index) => (
-            <option key={resolution.label} value={index}>
-              {resolution.label}
-            </option>
-          ))}
-        </select>
+          onValueChange={(value) => setResolutionIndex(Number(value))}
+        />
       </div>
 
       <Button onClick={applyWindowSettings}>적용</Button>

@@ -24,7 +24,8 @@ body,
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  width: min(480px, 100%);
+  /* 큼직해진 폰트에 맞춰 원래 너비(480px)의 약 1.8배로 넓힘 */
+  width: min(864px, 100%);
 }
 
 .chat-test-panel__form {
@@ -69,17 +70,4 @@ body,
 .settings-panel__row {
   display: flex;
   gap: var(--space-2);
-}
-
-.settings-panel__select {
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-default);
-  background: var(--surface-input);
-  color: var(--text-primary);
-  padding: var(--space-2) var(--space-3);
-  font-size: 14px;
-}
-
-.settings-panel__select:disabled {
-  opacity: 0.5;
 }

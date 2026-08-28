@@ -41,7 +41,7 @@ export function ChatTestPanel({ baseUrl }: ChatTestPanelProps) {
       </div>
 
       <div className={`chat-test-panel__status chat-test-panel__status--${status}`}>
-        {status === 'connected' ? <Wifi size={14} /> : <WifiOff size={14} />}
+        {status === 'connected' ? <Wifi size={22} /> : <WifiOff size={22} />}
         <span>
           {STATUS_LABEL[status]}
           {error ? ` — ${error}` : ''}

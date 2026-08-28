@@ -1,4 +1,7 @@
 export {
+  Check,
+  ChevronDown,
+  ChevronUp,
   Maximize,
   Minimize,
   Settings,

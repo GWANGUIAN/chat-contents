@@ -13,6 +13,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@radix-ui/react-select": "catalog:",
     "lucide-react": "catalog:"
   },
   "peerDependencies": {

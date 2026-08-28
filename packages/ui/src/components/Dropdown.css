@@ -1,0 +1,102 @@
+.cc-dropdown__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: var(--border-width-strong) solid var(--accent-border);
+  background: #ffffff;
+  color: var(--text-primary);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.cc-dropdown__trigger:hover {
+  background: var(--surface-hover);
+}
+
+.cc-dropdown__trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-softer);
+}
+
+.cc-dropdown__trigger[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cc-dropdown__trigger[data-placeholder] {
+  color: var(--text-muted);
+}
+
+.cc-dropdown__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  color: var(--accent-text);
+}
+
+.cc-dropdown__content {
+  z-index: 100;
+  width: var(--radix-select-trigger-width);
+  max-height: min(320px, var(--radix-select-content-available-height));
+  border-radius: var(--radius-lg);
+  border: var(--border-width-strong) solid var(--accent-border);
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+  overflow: hidden;
+}
+
+.cc-dropdown__viewport {
+  padding: var(--space-2);
+}
+
+.cc-dropdown__scroll-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  background: var(--surface-panel);
+  color: var(--accent-text);
+  cursor: default;
+}
+
+.cc-dropdown__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.cc-dropdown__item[data-highlighted] {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.cc-dropdown__item[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cc-dropdown__item-indicator {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--accent-text);
+}

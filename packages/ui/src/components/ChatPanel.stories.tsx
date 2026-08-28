@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useRef, useState } from 'react'
+import { Button } from './Button'
 import { ChatMessage } from './ChatMessage'
 import { ChatPanel } from './ChatPanel'
 
@@ -51,4 +53,46 @@ export const LongFeed: Story = {
       </ChatPanel>
     </div>
   ),
+}
+
+interface LiveMessage {
+  id: number
+  nickname: string
+  text: string
+}
+
+export const LiveFeed: Story = {
+  render: () => {
+    const [messages, setMessages] = useState<LiveMessage[]>(() =>
+      SAMPLE_NICKNAMES.slice(0, 3).map((nickname, i) => ({
+        id: i,
+        nickname,
+        text: `초기 메시지 ${i + 1}`,
+      })),
+    )
+    const nextId = useRef(messages.length)
+
+    const addMessage = () => {
+      const id = nextId.current
+      nextId.current += 1
+      const nickname = SAMPLE_NICKNAMES[id % SAMPLE_NICKNAMES.length] ?? '익명'
+      setMessages((prev) => [...prev, { id, nickname, text: `새 메시지 ${id + 1}입니다` }])
+    }
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 340 }}>
+        <Button onClick={addMessage}>새 메시지 추가</Button>
+        {/* 위로 스크롤한 채 "새 메시지 추가"를 눌러보면 자동 스크롤이 멈추고
+            플로팅 버튼이 뜹니다. 버튼을 누르면 맨 아래로 이동하며 자동 스크롤이
+            다시 켜집니다. */}
+        <ChatPanel maxHeight={280}>
+          {messages.map((message) => (
+            <ChatMessage key={message.id} nickname={message.nickname}>
+              {message.text}
+            </ChatMessage>
+          ))}
+        </ChatPanel>
+      </div>
+    )
+  },
 }

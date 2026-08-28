@@ -39,6 +39,14 @@ export function SlideInPanel({
       const target = event.target as Node
       if (ref.current?.contains(target)) return
       if (triggerRef?.current?.contains(target)) return
+      // Dropdown 같은 Radix 기반 요소는 팝오버를 Portal로 body에 렌더링해서
+      // SlideInPanel의 DOM 서브트리 밖에 있습니다. 이 속성은 Radix의 popper
+      // 콘텐츠 래퍼에 공통으로 붙는 마커라 Select/향후 다른 Radix 오버레이에도
+      // 그대로 적용됩니다 — 없으면 드롭다운에서 옵션 하나 고를 때마다 바깥
+      // 클릭으로 오인해서 SlideInPanel이 먼저 닫혀버립니다.
+      if (target instanceof Element && target.closest('[data-radix-popper-content-wrapper]')) {
+        return
+      }
       onClose()
     }
     document.addEventListener('pointerdown', handlePointerDown)

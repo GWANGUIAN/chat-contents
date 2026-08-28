@@ -33,7 +33,7 @@ export function App() {
           className="app-shell__settings-trigger"
           onClick={() => setSettingsOpen((prev) => !prev)}
         >
-          <Settings size={20} />
+          <Settings size={26} />
         </IconButton>
 
         <SlideInPanel

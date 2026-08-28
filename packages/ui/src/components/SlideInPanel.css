@@ -1,8 +1,11 @@
 .cc-slide-in {
   position: fixed;
-  bottom: var(--space-6);
+  /* 톱니바퀴 트리거(IconButton, 48px 고정 크기)와 안 겹치도록 그 위로 뜨게
+     합니다: 트리거의 bottom 오프셋 + 트리거 높이 + 여유 간격. */
+  bottom: calc(var(--space-6) + 48px + var(--space-3));
   z-index: 40;
-  width: min(340px, calc(100vw - var(--space-6) * 2));
+  /* 큼직해진 폰트에 맞춰 원래 너비(340px)보다 약간 넓힘 */
+  width: min(420px, calc(100vw - var(--space-6) * 2));
   pointer-events: none;
   opacity: 0;
   transition:

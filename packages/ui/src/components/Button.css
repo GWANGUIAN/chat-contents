@@ -2,12 +2,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   gap: var(--space-2);
   border: var(--border-width-strong) solid transparent;
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-5);
   font-weight: 800;
   font-size: var(--font-size-md);
+  white-space: nowrap;
   transition:
     transform 0.12s ease,
     background-color 0.15s ease,
