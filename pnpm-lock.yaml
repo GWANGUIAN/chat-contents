@@ -227,6 +227,70 @@ importers:
         specifier: 'catalog:'
         version: 6.4.3(@types/node@22.20.1)
 
+  apps/quiz-1v100:
+    dependencies:
+      '@chat-contents/app-settings':
+        specifier: workspace:*
+        version: link:../../packages/app-settings
+      '@chat-contents/chat-client':
+        specifier: workspace:*
+        version: link:../../packages/chat-client
+      '@chat-contents/chat-proxy':
+        specifier: workspace:*
+        version: link:../../packages/chat-proxy
+      '@chat-contents/electron-shared':
+        specifier: workspace:*
+        version: link:../../packages/electron-shared
+      '@chat-contents/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      electron-store:
+        specifier: 'catalog:'
+        version: 10.1.0
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+      ws:
+        specifier: 'catalog:'
+        version: 8.21.3
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.76
+    devDependencies:
+      '@chat-contents/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.1
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.5(@types/react@19.2.18)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.3(@types/node@22.20.1))
+      electron:
+        specifier: 'catalog:'
+        version: 33.4.11
+      electron-builder:
+        specifier: 'catalog:'
+        version: 25.1.8(electron-builder-squirrel-windows@25.1.8)
+      electron-vite:
+        specifier: 'catalog:'
+        version: 5.0.0(vite@6.4.3(@types/node@22.20.1))
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite:
+        specifier: 'catalog:'
+        version: 6.4.3(@types/node@22.20.1)
+
   packages/app-settings:
     devDependencies:
       '@chat-contents/config':

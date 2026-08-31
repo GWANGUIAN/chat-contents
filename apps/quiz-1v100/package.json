@@ -1,0 +1,38 @@
+{
+  "name": "@chat-contents/quiz-1v100",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "dist": "electron-vite build && electron-builder --config electron-builder.yml",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json"
+  },
+  "dependencies": {
+    "@chat-contents/app-settings": "workspace:*",
+    "@chat-contents/chat-client": "workspace:*",
+    "@chat-contents/chat-proxy": "workspace:*",
+    "@chat-contents/electron-shared": "workspace:*",
+    "@chat-contents/ui": "workspace:*",
+    "electron-store": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "ws": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@chat-contents/config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "catalog:",
+    "electron-builder": "catalog:",
+    "electron-vite": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

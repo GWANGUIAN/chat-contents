@@ -1,0 +1,19 @@
+appId: com.chatcontents.quiz1v100
+productName: Quiz1v100
+directories:
+  output: release
+files:
+  - out/**/*
+  - package.json
+win:
+  icon: build/icon.png
+  target:
+    - target: portable
+      arch:
+        - x64
+portable:
+  artifactName: ${productName}-${version}-portable.exe
+asar: true
+extraResources:
+  - from: build/icon.png
+    to: icon.png
