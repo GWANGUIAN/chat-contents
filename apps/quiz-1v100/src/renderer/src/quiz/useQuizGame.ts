@@ -44,6 +44,9 @@ export interface UseQuizGameResult {
   remainingSeconds: number
   roundStatus: Record<string, RoundStatus>
   confirmHostAnswer: (rawText: string) => void
+  answerShown: boolean
+  revealAnswer: () => void
+  revealParticipants: () => void
 
   nextAction: NextAction | null
   eliminatedThisRound: Participant[]
@@ -75,7 +78,7 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
   const [round, setRound] = useState(0)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [targetCount, setTargetCount] = useState(DEFAULT_TARGET_COUNT)
-  const [hostParticipates, setHostParticipates] = useState(false)
+  const [hostParticipates, setHostParticipates] = useState(true)
   const [hostNickname, setHostNickname] = useState('')
 
   const [answerSeconds, setAnswerSeconds] = useState(
@@ -84,6 +87,8 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
   const [remainingSeconds, setRemainingSeconds] = useState(answerSeconds)
   const [submissions, setSubmissions] = useState<Record<string, string>>({})
   const [roundStatus, setRoundStatus] = useState<Record<string, RoundStatus>>({})
+  /** answerReveal 단계에서 "정답 공개" 버튼을 눌렀는지. 누르기 전엔 정답을 숨겨둡니다. */
+  const [answerShown, setAnswerShown] = useState(false)
 
   const [nextAction, setNextAction] = useState<NextAction | null>(null)
   const [eliminatedThisRound, setEliminatedThisRound] = useState<Participant[]>([])
@@ -171,10 +176,10 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
     return () => clearInterval(interval)
   }, [phase])
 
-  // 카운트다운 종료 시 호스트 선택 단계 또는 자동 공개로 분기.
+  // 카운트다운 종료 시 호스트 선택 단계(참여 시) 또는 정답 공개 대기 단계로 분기.
   useEffect(() => {
     if (phase !== 'question' || remainingSeconds !== 0) return
-    setPhase(hostParticipates ? 'hostPick' : 'reveal')
+    setPhase(hostParticipates ? 'hostPick' : 'answerReveal')
   }, [phase, remainingSeconds, hostParticipates])
 
   const startRecruiting = useCallback(() => {
@@ -221,6 +226,7 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
       })
       setAnswerSeconds(seconds)
       setRemainingSeconds(seconds)
+      setAnswerShown(false)
       setRound(roundNumber)
       setCurrentQuestionIndex(questionIndex)
       setPhase('question')
@@ -238,10 +244,22 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
     (rawText: string) => {
       if (phase !== 'hostPick') return
       setSubmissions((prev) => ({ ...prev, [HOST_ID]: rawText }))
-      setPhase('reveal')
+      setPhase('answerReveal')
     },
     [phase],
   )
+
+  /** "정답 공개" 버튼 — 정답 텍스트만 먼저 보여줍니다(참가자 타일은 아직 그대로). */
+  const revealAnswer = useCallback(() => {
+    if (phase !== 'answerReveal') return
+    setAnswerShown(true)
+  }, [phase])
+
+  /** "정답자 공개" 버튼 — 이제 실제 reveal 연출(타일 색칠 + 탈락 적용)로 넘어갑니다. "정답 공개"를 먼저 눌러야 합니다. */
+  const revealParticipants = useCallback(() => {
+    if (phase !== 'answerReveal' || !answerShown) return
+    setPhase('reveal')
+  }, [phase, answerShown])
 
   // 정답 공개 연출: reveal 진입당 한 번만 실행(라운드 번호로 가드).
   useEffect(() => {
@@ -339,6 +357,7 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
     setCurrentQuestionIndex(0)
     setSubmissions({})
     setRoundStatus({})
+    setAnswerShown(false)
     setNextAction(null)
     setEliminatedThisRound([])
     setWinner(null)
@@ -389,6 +408,9 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
     remainingSeconds,
     roundStatus,
     confirmHostAnswer,
+    answerShown,
+    revealAnswer,
+    revealParticipants,
 
     nextAction,
     eliminatedThisRound,

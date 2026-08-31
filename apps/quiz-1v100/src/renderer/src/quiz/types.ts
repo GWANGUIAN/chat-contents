@@ -4,6 +4,8 @@ export type GamePhase =
   | 'ready'
   | 'question'
   | 'hostPick'
+  /** "정답 공개" 버튼을 눌러 정답을 먼저 보여주고, "정답자 공개" 버튼을 눌러야 다음(reveal)으로 넘어갑니다. */
+  | 'answerReveal'
   | 'reveal'
   | 'roundResult'
   | 'winner'

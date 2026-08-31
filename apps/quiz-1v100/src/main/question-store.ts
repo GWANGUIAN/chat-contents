@@ -21,7 +21,7 @@ export interface QuestionStore {
 
 /**
  * 공용 AppSettings(모든 앱 공통 설정)와 완전히 분리된, 이 앱 전용 로컬 저장소입니다.
- * 문제 은행/기본 답변 제한시간은 다른 앱과 공유할 이유가 없는 데이터라
+ * 문제 은행/기본 답변 제출시간은 다른 앱과 공유할 이유가 없는 데이터라
  * packages/electron-shared를 건드리지 않고 별도 electron-store 파일로 관리합니다.
  */
 export function createQuestionStore(): QuestionStore {

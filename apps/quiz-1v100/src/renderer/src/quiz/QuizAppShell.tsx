@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AnswerRevealPanel } from './AnswerRevealPanel'
 import { GameOverScreen } from './GameOverScreen'
 import { GameSetup } from './GameSetup'
 import { HostAnswerPicker } from './HostAnswerPicker'
@@ -18,7 +19,10 @@ export interface QuizAppShellProps {
   sfxVolume: number
 }
 
-const ROUND_PHASES = new Set(['question', 'hostPick', 'reveal', 'roundResult'])
+const ROUND_PHASES = new Set(['question', 'hostPick', 'answerReveal', 'reveal', 'roundResult'])
+/** 이 단계에서는 참가자 그리드 위에 딤드 배경 + 가운데 카드로 덮어서 보여줍니다.
+ *  reveal 단계는 제외 — 정답 공개는 그리드 타일이 직접 불 켜지는 연출이라 가려지면 안 됩니다. */
+const OVERLAY_PHASES = new Set(['question', 'hostPick', 'answerReveal', 'roundResult'])
 
 export function QuizAppShell({ baseUrl, sfxVolume }: QuizAppShellProps) {
   const bank = useQuestionBank()
@@ -39,6 +43,7 @@ export function QuizAppShell({ baseUrl, sfxVolume }: QuizAppShellProps) {
         aliveCount={aliveCount}
         totalCount={game.participants.length}
         chatStatus={game.chatStatus}
+        onEndGame={game.phase !== 'setup' ? game.resetGame : undefined}
       />
 
       <div className="quiz-content">
@@ -77,33 +82,50 @@ export function QuizAppShell({ baseUrl, sfxVolume }: QuizAppShellProps) {
           ) : null}
 
           {ROUND_PHASES.has(game.phase) ? (
-            <div className="quiz-play">
-              {game.phase === 'question' && game.currentQuestion ? (
-                <QuestionCard
-                  question={game.currentQuestion}
-                  answerSeconds={game.answerSeconds}
-                  remainingSeconds={game.remainingSeconds}
-                  onDevInjectMockAnswers={game.devInjectMockAnswers}
-                />
-              ) : null}
-
-              {game.phase === 'hostPick' && game.currentQuestion ? (
-                <HostAnswerPicker
-                  question={game.currentQuestion}
-                  onConfirm={game.confirmHostAnswer}
-                />
-              ) : null}
-
-              {game.phase === 'roundResult' ? (
-                <RoundResultBanner
-                  eliminatedThisRound={game.eliminatedThisRound}
-                  survivorCount={aliveCount}
-                  nextAction={game.nextAction}
-                  onProceed={game.proceed}
-                />
-              ) : null}
-
+            <div className="quiz-stage">
+              {/* 참가자 그리드는 항상 뒤쪽에 떠 있고, 문제/결과 카드는 그 위에 딤드 오버레이로 겹쳐 보여줍니다. */}
               <ParticipantGrid participants={game.participants} roundStatus={game.roundStatus} />
+
+              {OVERLAY_PHASES.has(game.phase) ? (
+                <div className="quiz-stage__overlay">
+                  <div className="quiz-stage__overlay-backdrop" />
+                  <div className="quiz-stage__overlay-content">
+                    {game.phase === 'question' && game.currentQuestion ? (
+                      <QuestionCard
+                        question={game.currentQuestion}
+                        answerSeconds={game.answerSeconds}
+                        remainingSeconds={game.remainingSeconds}
+                        onDevInjectMockAnswers={game.devInjectMockAnswers}
+                      />
+                    ) : null}
+
+                    {game.phase === 'hostPick' && game.currentQuestion ? (
+                      <HostAnswerPicker
+                        question={game.currentQuestion}
+                        onConfirm={game.confirmHostAnswer}
+                      />
+                    ) : null}
+
+                    {game.phase === 'answerReveal' && game.currentQuestion ? (
+                      <AnswerRevealPanel
+                        question={game.currentQuestion}
+                        answerShown={game.answerShown}
+                        onRevealAnswer={game.revealAnswer}
+                        onRevealParticipants={game.revealParticipants}
+                      />
+                    ) : null}
+
+                    {game.phase === 'roundResult' ? (
+                      <RoundResultBanner
+                        eliminatedThisRound={game.eliminatedThisRound}
+                        survivorCount={aliveCount}
+                        nextAction={game.nextAction}
+                        onProceed={game.proceed}
+                      />
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
             </div>
           ) : null}
 

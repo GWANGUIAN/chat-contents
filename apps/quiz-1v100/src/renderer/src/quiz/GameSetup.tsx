@@ -114,7 +114,7 @@ export function GameSetup({
 
           <div className="game-setup__section">
             <NumberInput
-              label="답변 제한시간"
+              label="답변 제출시간"
               value={answerSeconds}
               min={5}
               max={60}

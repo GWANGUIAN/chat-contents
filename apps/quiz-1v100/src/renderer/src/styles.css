@@ -26,24 +26,29 @@ body,
 }
 
 .quiz-hud {
+  /* 배경/보더 없이 콘텐츠 위에 떠 있는 플로팅 바 — 레이아웃 공간을 차지하지 않으므로
+     아래 .quiz-content/.quiz-stage__overlay는 이 높이만큼 오프셋을 두지 않습니다. */
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-6);
-  background: var(--surface-panel-alt);
-  border-bottom: var(--border-width-strong) solid var(--accent-border);
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  pointer-events: none;
+}
+
+.quiz-hud > * {
+  pointer-events: auto;
 }
 
 .quiz-hud__group {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .quiz-hud__status-icon {
@@ -54,15 +59,18 @@ body,
   color: var(--accent-text);
 }
 
+.quiz-hud__end-button.cc-button {
+  font-size: var(--font-size-sm);
+  padding: var(--space-2) var(--space-4);
+}
+
 .quiz-content {
   flex: 1;
   overflow-y: auto;
-  /* 상단 고정 .quiz-hud 만큼 오프셋 (fixed는 흐름 밖이라 자동으로 안 밀림) */
-  padding-top: 64px;
 }
 
 .quiz-content__inner {
-  min-height: calc(100vh - 64px);
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,48 +202,110 @@ body,
   overflow-y: auto;
 }
 
-/* ---------- Quiz play (question/hostPick/reveal/roundResult) ---------- */
+/* ---------- Quiz stage (question/hostPick/reveal/roundResult) ----------
+   참가자 그리드는 항상 뒤쪽에 떠 있는 배경이고, 문제/결과 카드는 그 위에
+   화면 전체를 덮는 딤드 오버레이 + 가운데 카드로 겹쳐 보여줍니다. */
 
-.quiz-play {
+.quiz-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.quiz-stage__overlay {
+  /* 화면 전체(뷰포트 기준)를 덮습니다 — 플로팅 HUD는 레이아웃 공간을 차지하지
+     않으므로 오프셋할 필요가 없고, 딤드 배경도 HUD 아래까지 자연스럽게 깔립니다. */
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.quiz-stage__overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop);
+  backdrop-filter: blur(4px);
+}
+
+.quiz-stage__overlay-content {
+  /* flex + align-items:center로 자식(QuestionCard/HostAnswerPicker/...)의 실제 너비와
+     무관하게 항상 가로 중앙에 오도록 합니다 — 자식마다 width가 달라서 이 컨테이너의
+     block 레이아웃에만 맡기면 좁은 카드가 왼쪽으로 쏠려 보일 수 있습니다. */
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(880px, 100%);
+  max-height: calc(100vh - var(--space-6) * 2);
+  overflow-y: auto;
+}
+
+/* ---------- QuestionCard / AnswerRevealPanel ---------- */
+
+.question-card,
+.answer-reveal-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-5);
-  width: 100%;
+  width: min(820px, 100%);
+  text-align: center;
 }
 
-/* ---------- QuestionCard ---------- */
-
-.question-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  width: min(640px, 100%);
-  text-align: center;
+.question-card .cc-title,
+.answer-reveal-panel .cc-title {
+  font-size: var(--font-size-xxl);
+  /* 긴 문제 텍스트가 단어(어절) 중간에서 잘리지 않고 단어 단위로만 줄바꿈되도록 합니다.
+     keep-all만으로 못 끊는 긴 토큰(URL 등)은 overflow-wrap이 최후 수단으로 처리합니다. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .question-card__options {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
   margin: 0;
   padding: 0;
   list-style: none;
   text-align: left;
+  width: 100%;
 }
 
 .question-card__option {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: 16px;
+  gap: var(--space-3);
+  font-size: var(--font-size-md);
+  font-weight: 700;
   color: var(--text-primary);
+}
+
+.question-card__option .cc-badge {
+  font-size: 18px;
+  padding: var(--space-2) var(--space-4);
+}
+
+.question-card__option--correct {
+  color: var(--success);
 }
 
 .question-card__guide {
   align-self: center;
-  font-size: 15px;
+  font-size: var(--font-size-sm);
   font-weight: 700;
+}
+
+.answer-reveal-panel__short-answer {
+  font-size: var(--font-size-md);
+  padding: var(--space-3) var(--space-5);
 }
 
 /* ---------- HostAnswerPicker ---------- */
