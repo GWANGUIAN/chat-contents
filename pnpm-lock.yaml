@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@radix-ui/react-checkbox':
+      specifier: ^1.1.4
+      version: 1.3.11
     '@radix-ui/react-dialog':
       specifier: ^1.1.23
       version: 1.1.23
@@ -92,6 +95,70 @@ importers:
       typescript:
         specifier: ^5.7.3
         version: 5.9.3
+
+  apps/chat-roulette:
+    dependencies:
+      '@chat-contents/app-settings':
+        specifier: workspace:*
+        version: link:../../packages/app-settings
+      '@chat-contents/chat-client':
+        specifier: workspace:*
+        version: link:../../packages/chat-client
+      '@chat-contents/chat-proxy':
+        specifier: workspace:*
+        version: link:../../packages/chat-proxy
+      '@chat-contents/electron-shared':
+        specifier: workspace:*
+        version: link:../../packages/electron-shared
+      '@chat-contents/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      electron-store:
+        specifier: 'catalog:'
+        version: 10.1.0
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+      ws:
+        specifier: 'catalog:'
+        version: 8.21.3
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.76
+    devDependencies:
+      '@chat-contents/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.20.1
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.5(@types/react@19.2.18)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.3(@types/node@22.20.1))
+      electron:
+        specifier: 'catalog:'
+        version: 33.4.11
+      electron-builder:
+        specifier: 'catalog:'
+        version: 25.1.8(electron-builder-squirrel-windows@25.1.8)
+      electron-vite:
+        specifier: 'catalog:'
+        version: 5.0.0(vite@6.4.3(@types/node@22.20.1))
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite:
+        specifier: 'catalog:'
+        version: 6.4.3(@types/node@22.20.1)
 
   apps/example:
     dependencies:
@@ -262,6 +329,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@radix-ui/react-checkbox':
+        specifier: 'catalog:'
+        version: 1.3.11(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@radix-ui/react-dialog':
         specifier: 'catalog:'
         version: 1.1.23(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -974,6 +1044,19 @@ packages:
 
   '@radix-ui/react-arrow@1.1.15':
     resolution: {integrity: sha512-v4zggRcjadnI+ClKDuijlQEW4tw3NoaeHc/PwpKnLoLLKNUG4InLegkstooLcRIUWCs+8L22dGURCVuFfOKfnA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-checkbox@1.3.11':
+    resolution: {integrity: sha512-Gnptr9pDDQxD3hgq2dtPbtrp/c2qH1mBwIzw3X/ivrMb2e1t0jMTi606fVEqFPaQR1ggXIVQWKj3P2WW9v7zGQ==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -4021,6 +4104,21 @@ snapshots:
   '@radix-ui/react-arrow@1.1.15(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@radix-ui/react-primitive': 2.1.10(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
+    optionalDependencies:
+      '@types/react': 19.2.18
+      '@types/react-dom': 19.2.5(@types/react@19.2.18)
+
+  '@radix-ui/react-checkbox@1.3.11(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.7
+      '@radix-ui/react-compose-refs': 1.1.5(@types/react@19.2.18)(react@19.2.8)
+      '@radix-ui/react-context': 1.2.2(@types/react@19.2.18)(react@19.2.8)
+      '@radix-ui/react-presence': 1.1.10(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@radix-ui/react-primitive': 2.1.10(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@radix-ui/react-use-controllable-state': 1.2.6(@types/react@19.2.18)(react@19.2.8)
+      '@radix-ui/react-use-size': 1.1.4(@types/react@19.2.18)(react@19.2.8)
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
     optionalDependencies:

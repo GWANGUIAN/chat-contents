@@ -1,0 +1,53 @@
+.cc-number-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cc-number-input__label {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.cc-number-input__control {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cc-number-input__field {
+  width: 110px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--surface-input);
+  border: var(--border-width-strong) solid var(--accent-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  -moz-appearance: textfield;
+}
+
+.cc-number-input__field::-webkit-outer-spin-button,
+.cc-number-input__field::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cc-number-input__field:disabled {
+  opacity: 0.7;
+}
+
+.cc-number-input__field:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-softer);
+}
+
+.cc-number-input__unit {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,386 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.app-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-6);
+}
+
+.app-shell__settings-trigger {
+  position: fixed;
+  left: var(--space-6);
+  bottom: var(--space-6);
+  z-index: 50;
+}
+
+/* ---------- RouletteView ---------- */
+
+.roulette-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  width: min(720px, 100%);
+}
+
+.roulette-view__connect {
+  position: fixed;
+  top: var(--space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel-alt);
+  border: var(--border-width-strong) solid var(--accent-border);
+}
+
+.roulette-view__connect-input.cc-text-input {
+  width: 180px;
+  font-size: 14px;
+  padding: 6px var(--space-3);
+}
+
+.roulette-view__connect-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.roulette-view__connect-status--connected {
+  color: var(--accent-text);
+}
+
+.roulette-view__connect-status--error {
+  color: var(--danger);
+}
+
+.roulette-view__connect-link {
+  all: unset;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-text);
+  white-space: nowrap;
+}
+
+.roulette-view__connect-link:hover {
+  text-decoration: underline;
+}
+
+.roulette-view__connect-link:disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.roulette-view__edit-trigger {
+  position: fixed;
+  right: var(--space-6);
+  top: var(--space-6);
+  z-index: 50;
+}
+
+.roulette-view__stage-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.roulette-view__title {
+  margin: 0;
+  font-size: var(--font-size-xxl);
+  font-weight: 800;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.roulette-view__result-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.roulette-view__winners {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ---------- CollectionControls ---------- */
+
+.collection-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.collection-controls__row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.collection-controls__timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.collection-controls__countdown {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.collection-controls__countdown-value {
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.collection-controls__countdown-value--urgent {
+  color: var(--danger);
+}
+
+.collection-controls__count {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-text);
+}
+
+.collection-controls__hint {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-text);
+  text-align: center;
+}
+
+/* ---------- CollectionLog ---------- */
+
+.collection-log {
+  width: 100%;
+}
+
+/* ---------- Roulette stage (RouletteReel / RouletteResult) ---------- */
+
+.roulette-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 320px;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--surface-panel);
+  border: var(--border-width-strong) solid var(--accent-border);
+  box-shadow: var(--shadow-panel);
+  text-align: center;
+}
+
+.roulette-stage__text {
+  font-size: var(--font-size-xxl);
+  font-weight: 800;
+  color: var(--text-primary);
+  word-break: break-word;
+  animation: roulette-flip-in 0.12s ease;
+}
+
+.roulette-stage__text--result {
+  color: var(--accent-text);
+  animation:
+    roulette-winner-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+    roulette-winner-glow 1.6s ease-in-out 0.5s 2;
+}
+
+.roulette-stage__by {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.roulette-stage__by--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes roulette-flip-in {
+  from {
+    opacity: 0.2;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes roulette-winner-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes roulette-winner-glow {
+  0%,
+  100% {
+    text-shadow: none;
+  }
+  50% {
+    text-shadow: 0 0 24px rgba(var(--shadow-color), 0.6);
+  }
+}
+
+/* ---------- EntryEditPanel ---------- */
+
+.entry-edit-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+}
+
+.entry-edit-panel__form {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.entry-edit-panel__form .cc-text-input {
+  flex: 1;
+}
+
+.entry-edit-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.entry-edit-panel__empty {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.entry-edit-panel__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel-alt);
+}
+
+.entry-edit-panel__row-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.entry-edit-panel__row-nickname {
+  font-weight: 700;
+  color: var(--accent-text);
+  flex-shrink: 0;
+}
+
+.entry-edit-panel__row-text {
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- SettingsPanel ---------- */
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.settings-panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.settings-panel__section-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.settings-panel__section-label--lg {
+  font-size: 16px;
+}
+
+.settings-panel__row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.settings-panel__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.settings-panel__group-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent-text);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.settings-panel__group-button.cc-button {
+  font-size: 24px;
+  padding: var(--space-2) var(--space-4);
+}
+
+.settings-panel__group-apply.cc-button {
+  width: 100%;
+  font-size: 20px;
+  padding: var(--space-2) var(--space-4);
+}
+
+.settings-panel__resolution-dropdown.cc-dropdown__trigger {
+  font-size: 20px;
+}
