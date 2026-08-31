@@ -64,8 +64,13 @@ export function ChatTestPanel({ baseUrl, initialChannelId = null }: ChatTestPane
         {messages.map((message, index) => {
           const key = `${message.at}-${index}`
           if (message.type === 'message') {
+            const nickname = message.user.nickname?.trim()
+            // 닉네임이 없거나 system류 placeholder면 실제 채팅이 아니라 걸러냅니다
+            // (예: SOOP이 자동으로 보내는 플랫폼 공지 — 문구는 언제든 바뀔 수 있어
+            // 내용이 아니라 닉네임 유무로 판단합니다).
+            if (!nickname || /^system$/i.test(nickname)) return null
             return (
-              <ChatMessage key={key} nickname={message.user.nickname}>
+              <ChatMessage key={key} nickname={nickname}>
                 {message.text}
               </ChatMessage>
             )
@@ -80,7 +85,8 @@ export function ChatTestPanel({ baseUrl, initialChannelId = null }: ChatTestPane
           if (message.type === 'subscription') {
             return <ChatMessage key={key}>⭐ {message.user.nickname}님이 구독했습니다.</ChatMessage>
           }
-          return <ChatMessage key={key}>{message.text}</ChatMessage>
+          // 'system'/'status' 이벤트는 닉네임이 없는 플랫폼 알림이라 채팅으로 표시하지 않습니다.
+          return null
         })}
       </ChatPanel>
     </Panel>

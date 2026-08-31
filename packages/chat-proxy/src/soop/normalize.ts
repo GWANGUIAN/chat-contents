@@ -27,17 +27,6 @@ function positiveAmount(...candidates: Array<string | undefined>): number {
 }
 
 /**
- * SOOP이 채팅 연결 시마다 방송사와 무관하게 자동으로 한 번씩 보내는 플랫폼
- * 고정 안내(예: "시청포인트 사용 방법 : 방송국 공지사항")입니다. 실제 채팅이
- * 아니라서 걸러냅니다.
- */
-const IGNORED_NOTIFICATION_PATTERNS = [/시청포인트\s*사용\s*방법/]
-
-function isIgnoredNotification(text: string): boolean {
-  return IGNORED_NOTIFICATION_PATTERNS.some((pattern) => pattern.test(text))
-}
-
-/**
  * SOOP 서비스 코드별 필드를 정규화 이벤트로 바꿉니다.
  *
  * 필드 배치는 실방송 패킷 + 커뮤니티 라이브러리(soop-extension) 기준입니다.
@@ -139,8 +128,10 @@ export function normalizeSoopPacket(packet: DecodedPacket): ChatEvent[] {
     }
     case SVC.NOTIFICATION: {
       // 실방송: [chatNo, flag, flag, notificationText, ...]
+      // SOOP이 방송사와 무관하게 접속 시마다 자동으로 보내는 플랫폼 고정 안내라
+      // 실제 채팅이 아닙니다. 문구는 언제든 바뀔 수 있어 내용으로 걸러내지 않고,
+      // 닉네임 없는 system 이벤트로만 넘기고 UI 쪽(ChatTestPanel)에서 렌더링을 건너뜁니다.
       const text = f[3] || f[0] || f[1] || '알림'
-      if (isIgnoredNotification(text)) return []
       return [{ type: 'system', platform: 'soop', text, at, raw: packet }]
     }
     default:

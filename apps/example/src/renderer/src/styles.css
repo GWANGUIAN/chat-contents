@@ -69,14 +69,47 @@ body,
 }
 
 .settings-panel__section-label {
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--text-secondary);
+}
+
+.settings-panel__section-label--lg {
+  font-size: 16px;
 }
 
 .settings-panel__row {
   display: flex;
   gap: var(--space-2);
+}
+
+.settings-panel__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.settings-panel__group-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent-text);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.settings-panel__group-button.cc-button {
+  font-size: 24px;
+  padding: var(--space-2) var(--space-4);
+}
+
+.settings-panel__group-apply.cc-button {
+  width: 100%;
+  font-size: 20px;
+  padding: var(--space-2) var(--space-4);
+}
+
+.settings-panel__resolution-dropdown.cc-dropdown__trigger {
+  font-size: 20px;
 }
 
 .onboarding-flow {

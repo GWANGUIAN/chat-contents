@@ -1,6 +1,15 @@
 import { useAppSettings, useWindowMode } from '@chat-contents/app-settings'
 import { speakSample, useTtsVoices } from '@chat-contents/tts'
-import { Button, Dropdown, Maximize, Slider, Switch, Volume2, VolumeX } from '@chat-contents/ui'
+import {
+  Button,
+  Dropdown,
+  Maximize,
+  Panel,
+  Slider,
+  Switch,
+  Volume2,
+  VolumeX,
+} from '@chat-contents/ui'
 
 const AUTO_VOICE_OPTION = { value: '', label: '자동 (한국어 우선)' }
 
@@ -47,37 +56,50 @@ export function SettingsPanel() {
         formatValue={(value) => `${Math.round(value)}%`}
       />
 
-      <div className="settings-panel__section">
-        <span className="settings-panel__section-label">창 모드</span>
-        <div className="settings-panel__row">
-          <Button
-            variant={windowMode.fullscreen ? 'secondary' : 'primary'}
-            onClick={() => windowMode.setFullscreen(false)}
-          >
-            창모드
-          </Button>
-          <Button
-            variant={windowMode.fullscreen ? 'primary' : 'secondary'}
-            onClick={() => windowMode.setFullscreen(true)}
-          >
-            <Maximize size={22} />
-            전체화면
-          </Button>
+      <Panel variant="subtle" className="settings-panel__group">
+        <span className="settings-panel__group-title">화면 설정</span>
+
+        <div className="settings-panel__section">
+          <span className="settings-panel__section-label settings-panel__section-label--lg">
+            창 모드
+          </span>
+          <div className="settings-panel__row">
+            <Button
+              className="settings-panel__group-button"
+              variant={windowMode.fullscreen ? 'secondary' : 'primary'}
+              onClick={() => windowMode.setFullscreen(false)}
+            >
+              창모드
+            </Button>
+            <Button
+              className="settings-panel__group-button"
+              variant={windowMode.fullscreen ? 'primary' : 'secondary'}
+              onClick={() => windowMode.setFullscreen(true)}
+            >
+              <Maximize size={18} />
+              전체화면
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <div className="settings-panel__section">
-        <span className="settings-panel__section-label">해상도</span>
-        <Dropdown
-          aria-label="해상도"
-          options={resolutionOptions}
-          value={String(windowMode.resolutionIndex)}
-          disabled={windowMode.fullscreen}
-          onValueChange={(value) => windowMode.setResolutionIndex(Number(value))}
-        />
-      </div>
+        <div className="settings-panel__section">
+          <span className="settings-panel__section-label settings-panel__section-label--lg">
+            해상도
+          </span>
+          <Dropdown
+            aria-label="해상도"
+            className="settings-panel__resolution-dropdown"
+            options={resolutionOptions}
+            value={String(windowMode.resolutionIndex)}
+            disabled={windowMode.fullscreen}
+            onValueChange={(value) => windowMode.setResolutionIndex(Number(value))}
+          />
+        </div>
 
-      <Button onClick={windowMode.apply}>적용</Button>
+        <Button className="settings-panel__group-apply" onClick={windowMode.apply}>
+          화면 설정 적용
+        </Button>
+      </Panel>
 
       <div className="settings-panel__section">
         <span className="settings-panel__section-label">채팅 음성 읽기(TTS)</span>

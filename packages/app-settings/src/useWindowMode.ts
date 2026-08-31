@@ -45,5 +45,12 @@ export function useWindowMode(
     }
   }
 
-  return { resolutions, fullscreen, setFullscreen, resolutionIndex, setResolutionIndex, apply }
+  return {
+    resolutions,
+    fullscreen,
+    setFullscreen,
+    resolutionIndex,
+    setResolutionIndex,
+    apply,
+  }
 }
