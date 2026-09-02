@@ -247,6 +247,34 @@ body,
   overflow-y: auto;
 }
 
+/* "정답자 공개"로 reveal 단계에 진입하는 순간 한 번 터지는 화면 플래시 —
+   게임쇼에서 정답 공개 시 조명이 확 밝아지는 연출을 흉내 냅니다. */
+.quiz-stage__flash {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    color-mix(in srgb, var(--accent) 45%, transparent) 40%,
+    transparent 72%
+  );
+  animation: quiz-flash 0.7s ease-out forwards;
+}
+
+@keyframes quiz-flash {
+  0% {
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 /* ---------- QuestionCard / AnswerRevealPanel ---------- */
 
 .question-card,
@@ -295,6 +323,23 @@ body,
 
 .question-card__option--correct {
   color: var(--success);
+  animation: question-option-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.question-card__option--correct .cc-badge {
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--success) 35%, transparent);
+}
+
+@keyframes question-option-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .question-card__guide {
@@ -306,6 +351,11 @@ body,
 .answer-reveal-panel__short-answer {
   font-size: var(--font-size-md);
   padding: var(--space-3) var(--space-5);
+}
+
+.scramble-text {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
 /* ---------- HostAnswerPicker ---------- */
@@ -387,20 +437,62 @@ body,
   white-space: nowrap;
 }
 
+/* 정답 공개 시 즉시 배경색이 바뀌는 대신, 뒤집히며 색이 있는 뒷면을 드러내는
+   3D 플립 카드 연출입니다(perspective + backface-visibility). */
 .participant-tile__status-panel {
   width: 100%;
   height: 28px;
+  perspective: 240px;
+}
+
+.participant-tile__status-panel-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.participant-tile--correct .participant-tile__status-panel-inner,
+.participant-tile--wrong .participant-tile__status-panel-inner {
+  transform: rotateY(180deg);
+}
+
+.participant-tile__status-panel-face {
+  position: absolute;
+  inset: 0;
   border-radius: var(--radius-sm);
+  backface-visibility: hidden;
   background: var(--surface-panel-alt);
-  transition: background-color 0.15s ease;
 }
 
-.participant-tile--correct .participant-tile__status-panel {
+.participant-tile__status-panel-face--back {
+  transform: rotateY(180deg);
+}
+
+.participant-tile--correct .participant-tile__status-panel-face--back {
   background: #3b82f6;
+  box-shadow: 0 0 14px 2px rgba(59, 130, 246, 0.75);
 }
 
-.participant-tile--wrong .participant-tile__status-panel {
+.participant-tile--wrong .participant-tile__status-panel-face--back {
   background: #ef4444;
+  box-shadow: 0 0 14px 2px rgba(239, 68, 68, 0.65);
+}
+
+/* 뒤집히는 순간 타일 전체에 짧게 번지는 글로우 펄스로 임팩트를 더합니다. */
+.participant-tile--correct,
+.participant-tile--wrong {
+  animation: participant-tile-pulse 0.6s ease-out;
+}
+
+@keyframes participant-tile-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--shadow-color), 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(var(--shadow-color), 0);
+  }
 }
 
 .participant-tile--out {

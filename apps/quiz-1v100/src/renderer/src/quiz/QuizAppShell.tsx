@@ -86,6 +86,11 @@ export function QuizAppShell({ baseUrl, sfxVolume }: QuizAppShellProps) {
               {/* 참가자 그리드는 항상 뒤쪽에 떠 있고, 문제/결과 카드는 그 위에 딤드 오버레이로 겹쳐 보여줍니다. */}
               <ParticipantGrid participants={game.participants} roundStatus={game.roundStatus} />
 
+              {/* "정답자 공개" 진입 순간 한 번 터지는 화면 플래시. key={round}로 라운드마다 다시 재생됩니다. */}
+              {game.phase === 'reveal' ? (
+                <div key={game.round} className="quiz-stage__flash" />
+              ) : null}
+
               {OVERLAY_PHASES.has(game.phase) ? (
                 <div className="quiz-stage__overlay">
                   <div className="quiz-stage__overlay-backdrop" />

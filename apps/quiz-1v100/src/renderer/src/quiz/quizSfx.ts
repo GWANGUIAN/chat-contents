@@ -70,3 +70,26 @@ export function playVictoryFanfare(sfxVolume: number): void {
     tone(freq, index * 0.14, 0.3, normalizedGain(sfxVolume, 0.07), 'triangle')
   })
 }
+
+/** "정답 공개" 클릭 시 스크램블 텍스트 연출과 함께 나는 상승형 스윕(휙 하는 소리). */
+export function playAnswerRevealSting(sfxVolume: number): void {
+  const ctx = getCtx()
+  const start = ctx.currentTime
+  const oscillator = ctx.createOscillator()
+  const gain = ctx.createGain()
+  oscillator.type = 'sawtooth'
+  oscillator.frequency.setValueAtTime(220, start)
+  oscillator.frequency.exponentialRampToValueAtTime(880, start + 0.35)
+  gain.gain.setValueAtTime(normalizedGain(sfxVolume, 0.05), start)
+  gain.gain.exponentialRampToValueAtTime(0.001, start + 0.4)
+  oscillator.connect(gain)
+  gain.connect(ctx.destination)
+  oscillator.start(start)
+  oscillator.stop(start + 0.4)
+}
+
+/** "정답자 공개" 시작 순간, 화면 플래시와 함께 나는 묵직한 임팩트음. */
+export function playRevealStart(sfxVolume: number): void {
+  tone(150, 0, 0.2, normalizedGain(sfxVolume, 0.09), 'sine')
+  tone(1046.5, 0.02, 0.12, normalizedGain(sfxVolume, 0.05), 'triangle')
+}

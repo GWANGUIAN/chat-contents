@@ -23,7 +23,12 @@ export function ParticipantTile({ participant, status }: ParticipantTileProps) {
         </Badge>
       ) : null}
       <span className="participant-tile__nickname">{participant.nickname}</span>
-      <div className="participant-tile__status-panel" />
+      <div className="participant-tile__status-panel">
+        <div className="participant-tile__status-panel-inner">
+          <div className="participant-tile__status-panel-face participant-tile__status-panel-face--front" />
+          <div className="participant-tile__status-panel-face participant-tile__status-panel-face--back" />
+        </div>
+      </div>
       {!participant.alive ? (
         <div className="participant-tile__out-overlay">
           <XCircle size={20} />

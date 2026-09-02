@@ -4,7 +4,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { QuizQuestion } from '../../../shared/quiz-types'
 import { isAnswerCorrect } from './answerMatching'
 import { generateMockAnswerBatch, generateMockRecruitBatch } from './devMock'
-import { playCorrectChime, playRoundStart, playWrongBuzz } from './quizSfx'
+import {
+  playAnswerRevealSting,
+  playCorrectChime,
+  playRevealStart,
+  playRoundStart,
+  playWrongBuzz,
+} from './quizSfx'
 import { buildRevealPlan, shuffle } from './revealTiming'
 import type { GamePhase, NextAction, Participant, RoundStatus } from './types'
 
@@ -253,7 +259,8 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
   const revealAnswer = useCallback(() => {
     if (phase !== 'answerReveal') return
     setAnswerShown(true)
-  }, [phase])
+    playAnswerRevealSting(sfxVolume)
+  }, [phase, sfxVolume])
 
   /** "정답자 공개" 버튼 — 이제 실제 reveal 연출(타일 색칠 + 탈락 적용)로 넘어갑니다. "정답 공개"를 먼저 눌러야 합니다. */
   const revealParticipants = useCallback(() => {
@@ -269,6 +276,8 @@ export function useQuizGame(options: UseQuizGameOptions): UseQuizGameResult {
 
     const currentQuestion = questions?.[currentQuestionIndex] ?? null
     if (!currentQuestion) return
+
+    playRevealStart(sfxVolume)
 
     const aliveParticipants = participantsRef.current.filter((p) => p.alive)
     const aliveIds = shuffle(aliveParticipants.map((p) => p.id))

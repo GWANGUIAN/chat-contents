@@ -1,5 +1,6 @@
 import { Badge, Button, Panel, Title } from '@chat-contents/ui'
 import type { QuizQuestion } from '../../../shared/quiz-types'
+import { ScrambleText } from './ScrambleText'
 
 export interface AnswerRevealPanelProps {
   question: QuizQuestion
@@ -48,7 +49,7 @@ export function AnswerRevealPanel({
         </ol>
       ) : answerShown ? (
         <Badge tone="success" variant="solid" className="answer-reveal-panel__short-answer">
-          정답: {question.acceptedAnswers[0]}
+          정답: <ScrambleText key={question.id} text={question.acceptedAnswers[0] ?? ''} />
         </Badge>
       ) : null}
 
